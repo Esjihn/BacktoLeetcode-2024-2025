@@ -7,10 +7,44 @@
     {
         public static void Main()
         {
-            Console.WriteLine(IsValid("()"));
-            Console.WriteLine(IsValid("()[]{}"));
-            Console.WriteLine(IsValid("(]"));
-            Console.WriteLine(IsValid("([])"));
+            Console.WriteLine(StrStr("sadbutsad", "sad"));
+            Console.WriteLine(StrStr("leetcode", "leeto"));
+        }
+
+        /// <summary>
+        /// Given two strings needle and haystack, 
+        /// return the index of the first occurrence of needle in haystack, 
+        /// or -1 if needle is not part of haystack.
+        /// </summary>
+        /// <param name="haystack"></param>
+        /// <param name="needle"></param>
+        /// <returns></returns>
+        public static int StrStr(string haystack, string needle)
+        {
+            if (string.IsNullOrEmpty(haystack)) return -1;
+            if (string.IsNullOrEmpty(needle)) return -1;
+
+            int result = -1;
+            int matchLoc = 0;
+
+            for (int i = 0; i < haystack.Length; i++)
+            {
+                if (haystack[i] == needle[matchLoc])
+                {
+                    matchLoc++;
+                    if (matchLoc == needle.Length)
+                    {
+                        result = i - matchLoc + 1;
+                        break;
+                    }
+                }
+                else
+                {
+                    i -= matchLoc;
+                    matchLoc = 0;
+                }
+            }
+            return result;
         }
 
         /// <summary>
