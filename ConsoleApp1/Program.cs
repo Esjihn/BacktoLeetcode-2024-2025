@@ -7,10 +7,74 @@
     {
         public static void Main()
         {
-            foreach(var val in Merge(new int[6] {1,2,3,0,0,0}, 3, new int[3] {2,5,6}, 3))
+            Console.WriteLine(IsValid("()"));
+            Console.WriteLine(IsValid("()[]{}"));
+            Console.WriteLine(IsValid("(]"));
+            Console.WriteLine(IsValid("([])"));
+        }
+
+        /// <summary>
+        /// Given a string s containing just the characters 
+        /// '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsValid(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+
+            Stack<char> stack = new Stack<char>();
+
+            foreach (char c in s)
             {
-                Console.WriteLine(val);
+                if (c == '(' || c == '{' || c == '[')
+                {
+                    stack.Push(c);
+                }
+                else if (c == ')' && stack.Count > 0 && stack.Peek() == '(')
+                {
+                    stack.Pop();
+                }
+                else if (c == '}' && stack.Count > 0 && stack.Peek() == '{')
+                {
+                    stack.Pop();
+                }
+                else if (c == ']' && stack.Count > 0 && stack.Peek() == '[')
+                {
+                    stack.Pop();
+                }
+                else
+                {
+                    return false;
+                }
             }
+
+            return true;
+        }
+
+        /// <summary>  
+        /// Find the longest common prefix in an array of strings.  
+        /// </summary>  
+        /// <param name="s"></param>  
+        /// <returns></returns>  
+        public static int LengthOfLastWord(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s.Length;
+
+            int n = s.Length;
+            int result = 0;
+            for (int i = n - 1; i >= 0; i--)
+            {
+                if (s[i] != ' ')
+                {
+                    result++;
+                }
+                else if (result > 0)
+                {
+                    return result;
+                }
+            }
+            return result;
         }
 
         /// <summary>
