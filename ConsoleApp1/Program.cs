@@ -7,8 +7,32 @@
     {
         public static void Main()
         {
-            Console.WriteLine(StrStr("sadbutsad", "sad"));
-            Console.WriteLine(StrStr("leetcode", "leeto"));
+            Console.WriteLine(RemoveElement(new int[] {3, 2, 2, 3}, 3));
+        }
+
+        /// <summary>
+        /// Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. 
+        /// The order of the elements may be changed. Then return the number of elements in nums which
+        /// are not equal to val.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static int RemoveElement(int[] nums, int val)
+        {
+            if (nums.Length == 0) return 0;
+            if (val == 0) return 0;
+
+            int writeIndex = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] != val)
+                {
+                    nums[writeIndex] = nums[i];
+                    writeIndex++;
+                }
+            }
+            return writeIndex;
         }
 
         /// <summary>
