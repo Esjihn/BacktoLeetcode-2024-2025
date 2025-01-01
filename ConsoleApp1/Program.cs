@@ -7,7 +7,35 @@
     {
         public static void Main()
         {
-            Console.WriteLine(RemoveElement(new int[] {3, 2, 2, 3}, 3));
+            Console.WriteLine(MajorityElement(new int[] {2, 2, 1, 1, 1, 2, 2}));
+        }
+
+        /// <summary>
+        /// Given an array nums of size n, return the majority element.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static int MajorityElement(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int count = 0;
+                for (int j = 0; j < nums.Length; j++)
+                {
+                    if (nums[i] == nums[j])
+                    {
+                        count++;
+                    }
+                }
+                if (count > nums.Length / 2)
+                {
+                    return nums[i];
+                }
+            }
+
+            return 0;
         }
 
         /// <summary>
