@@ -19,23 +19,34 @@
         {
             if (nums.Length == 0) return 0;
 
-            for (int i = 0; i < nums.Length; i++)
+            int candidate = 0, count = 0;
+
+            // Phase 1: Find a Candidate
+            foreach (int num in nums)
             {
-                int count = 0;
-                for (int j = 0; j < nums.Length; j++)
+                if (count == 0)
                 {
-                    if (nums[i] == nums[j])
-                    {
-                        count++;
-                    }
+                    candidate = num; // Set a new candidate
+                    count = 1;       // Reset the count
                 }
-                if (count > nums.Length / 2)
+                else if (num == candidate)
                 {
-                    return nums[i];
+                    count++; // Increment count for the same candidate
+                }
+                else
+                {
+                    count--; // Decrement count for a different element
                 }
             }
 
-            return 0;
+            // Phase 2: Verify the Candidate
+            count = 0;
+            foreach (int num in nums)
+            {
+                if (num == candidate) count++;
+            }
+
+            return count > nums.Length / 2 ? candidate : 0;
         }
 
         /// <summary>
