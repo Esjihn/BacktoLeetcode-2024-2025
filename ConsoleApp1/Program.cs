@@ -7,10 +7,35 @@
     {
         public static void Main()
         {
-            foreach (var digit in PlusOne(new int[] { 1, 2, 3 }))
+            Console.WriteLine(CanConstruct("aa","aab"));
+        }
+
+        /// <summary>
+        /// Given two strings ransomNote and magazine, return true if ransomNote can be
+        /// constructed by using the letters from magazine and false otherwise.
+        /// </summary>
+        /// <param name="ransomNote"></param>
+        /// <param name="magazine"></param>
+        /// <returns></returns>
+        public static bool CanConstruct(string ransomNote, string magazine)
+        {
+            if (string.IsNullOrEmpty(ransomNote)) return false;
+            if (string.IsNullOrEmpty(magazine)) return false;
+
+            int[] letters = new int[26];
+            foreach (char c in magazine)
             {
-                Console.WriteLine(digit);
+                letters[c - 'a']++;
             }
+                
+            foreach (char ch in ransomNote)
+            {
+                letters[ch - 'a']--;
+                if (letters[ch - 'a'] == -1)
+                    return false;
+            }
+
+            return true;
         }
 
         /// <summary>
