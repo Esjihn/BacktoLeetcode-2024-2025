@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp1
+﻿using System.Diagnostics.Metrics;
+
+namespace ConsoleApp1
 {
     /// <summary>
     /// Main Program 2024-2025 leetcode grind... 
@@ -7,9 +9,50 @@
     {
         public static void Main()
         {
-            Console.WriteLine(IsIsomorphic("egg", "add"));
-            Console.WriteLine(IsIsomorphic("foo", "bar"));
-            Console.WriteLine(IsIsomorphic("paper", "title"));
+            Console.WriteLine(WordPattern("abba", "dog cat cat dog"));
+        }
+
+        /// <summary>
+        /// Given a pattern and a string s, find if s follows the same pattern.
+        /// Here follow means a full match, such that there is a bijection (1:1 mapping)
+        /// between a letter in pattern and a non-empty word in s.
+        /// Specifically:
+        /// Each letter in pattern maps to exactly one unique word in s.
+        /// Each unique word in s maps to exactly one letter in pattern.
+        /// No two letters map to the same word, and no two words map to the same letter.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool WordPattern(string pattern, string s)
+        {
+            if (string.IsNullOrEmpty(pattern)) return false;
+            if (string.IsNullOrEmpty(s)) return false;
+
+            var dictionary = new Dictionary<char, string>();
+            var words = s.Split(' ');
+            if (words.Length != pattern.Length)
+            {
+                return false;
+            }
+            for (var i = 0; i < pattern.Length; i++)
+            {
+                if (dictionary.TryGetValue(pattern[i], out var currentPair))
+                {
+                    if (currentPair != words[i])
+                    {
+                        return false;
+                    }
+                    continue;
+                }
+                if (dictionary.ContainsValue(words[i]))
+                {
+                    return false;
+                }
+                dictionary.Add(pattern[i], words[i]);
+            }
+
+            return true;
         }
 
         /// <summary>
