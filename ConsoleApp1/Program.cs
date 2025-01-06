@@ -9,7 +9,40 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(WordPattern("abba", "dog cat cat dog"));
+            Console.WriteLine(IsAnagram("anagram","nagaram"));
+        }
+
+        /// <summary>
+        /// Given two strings s and t, return true if t is an anagram of s, and
+        /// false otherwise. Anagram being all the same characters are present
+        /// even if the words are rearranged. 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static bool IsAnagram(string s, string t)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+            if (string.IsNullOrEmpty(t)) return false;
+            if (s.Length != t.Length) return false;
+
+            int[] saphabet = new int[26];
+            foreach (char c in s)
+            {
+                saphabet[c - 'a']++;
+            }
+            foreach (char c in t)
+            {
+                if (saphabet[c - 'a'] > 0)
+                {
+                    saphabet[c - 'a']--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>
