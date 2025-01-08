@@ -12,7 +12,40 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(SearchInsert(new int[] {1,2,3,4,5}, 4));
+            Console.WriteLine(ContainsNearbyDuplicate(new int[] {1,2,3,1}, 3));
+        }
+
+        /// <summary>
+        /// Given an integer array nums and an integer k, 
+        /// return true if there are two distinct indices i and j
+        /// in the array such that nums[i] == nums[j] and abs(i - j) <= k.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public static bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            if (nums.Length == 0) return false;
+            if (k == 0) return false;
+
+            var numIndices = new HashSet<int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (numIndices.Contains(nums[i]))
+                {
+                    return true;
+                }
+
+                numIndices.Add(nums[i]);
+
+                if (numIndices.Count > k)
+                {
+                    numIndices.Remove(nums[i - k]);
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
