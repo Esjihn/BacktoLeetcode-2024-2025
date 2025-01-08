@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System;
 using System.Diagnostics.Metrics;
+using System.ComponentModel;
 
 namespace ConsoleApp1
 {
@@ -11,7 +12,45 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(IsHappy(19));
+            Console.WriteLine(SearchInsert(new int[] {1,2,3,4,5}, 4));
+        }
+
+        /// <summary>
+        /// Given a sorted array of distinct integers and a target value, 
+        /// return the index if the target is found. 
+        /// If not, return the index where it would be if it were inserted in order.
+        /// You must write an algorithm with O(log n) runtime complexity.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static int SearchInsert(int[] nums, int target)
+        {
+            if (nums.Length == 0) return 0;
+            if (target == 0) return 0;
+
+            int left = 0, right = nums.Length - 1;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                if (nums[mid] == target)
+                {
+                    return mid; // Target found
+                }
+                else if (nums[mid] < target)
+                {
+                    left = mid + 1; // Search in the right half
+                }
+                else
+                {
+                    right = mid - 1; // Search in the left half
+                }
+            }
+
+            return left;
+
         }
 
         /// <summary>
