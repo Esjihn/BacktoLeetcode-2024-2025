@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics.Metrics;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
@@ -12,7 +13,41 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(ContainsNearbyDuplicate(new int[] {1,2,3,1}, 3));
+            foreach (var range in SummaryRanges(new int[] {0,1,2,4,5,7}))
+            {
+                Console.WriteLine(range);
+            }
+        }
+
+        /// <summary>
+        /// You are given a sorted unique integer array nums.
+        /// A range[a, b] is the set of all integers from a to b(inclusive).
+        /// Return the smallest sorted list of ranges that cover all the numbers 
+        /// in the array exactly.That is, each element of nums is covered by exactly
+        /// one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
+        /// Each range[a, b] in the list should be output as:
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static IList<string> SummaryRanges(int[] nums)
+        {
+            if (nums.Length == 0) return new List<string>();
+
+            var result = new List<string>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int start = nums[i];
+                while (i < nums.Length - 1 && nums[i + 1] - nums[i] == 1)
+                {
+                    i++;
+                }
+                if (start != nums[i])
+                    result.Add($"{start}->{nums[i]}");
+                else
+                    result.Add($"{start}");
+            }
+
+            return result;
         }
 
         /// <summary>
