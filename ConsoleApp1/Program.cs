@@ -5,6 +5,10 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections;
+using System.Drawing;
+using System.Numerics;
 
 namespace ConsoleApp1
 {
@@ -26,12 +30,37 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            var head = new ListNode(3);
-            head.next = new ListNode(2);
-            head.next = new ListNode(0);
-            head.next = new ListNode(-5);
+            Console.WriteLine(RemoveDuplicates(new int[] {1,1,1,2,2,3}));
+            Console.WriteLine(RemoveDuplicates(new int[] {0,0,1,1,1,2,2,3}));
+        }
 
-            Console.WriteLine(HasCycle(head));
+        /// <summary>
+        /// Given an integer array nums sorted in non-decreasing (increasing) order, remove some duplicates 
+        /// in-place such that each unique element appears at most twice. The relative order of 
+        /// the elements should be kept the same. Since it is impossible to change the length of the array
+        /// in some languages, you must instead have the result be placed in the first part of the array nums. 
+        /// More formally, if there are k elements after removing the duplicates, then the first k elements 
+        /// of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+        /// Return k after placing the final result in the first k slots of nums.
+        /// Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static int RemoveDuplicates(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            var substituteIndex = 0;
+            for (var i = 0; i < nums.Length; i++)
+            {
+                if (substituteIndex - 2 >= 0 && nums[substituteIndex - 2] == nums[i])
+                {
+                    continue;
+                }
+                nums[substituteIndex] = nums[i];
+                substituteIndex++;
+            }
+            return substituteIndex;
         }
 
         /// <summary>
