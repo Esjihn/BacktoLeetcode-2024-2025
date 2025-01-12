@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics.Metrics;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Xml.Linq;
 
 namespace ConsoleApp1
 {
@@ -10,11 +12,11 @@ namespace ConsoleApp1
     {
         public int val;
         public ListNode next;
-        public ListNode(int x)
+        public ListNode(int val = 0, ListNode next = null)
         {
-            val = x;
-            next = null;
-        }
+            this.val = val;
+            this.next = next;
+        }    
     }
 
     /// <summary>
@@ -30,6 +32,40 @@ namespace ConsoleApp1
             head.next = new ListNode(-5);
 
             Console.WriteLine(HasCycle(head));
+        }
+
+        /// <summary>
+        /// You are given the heads of two sorted linked lists list1 and list2.
+        /// Merge the two lists into one sorted list.The list should be made by splicing together the nodes of the first two lists.
+        /// Return the head of the merged linked list.
+        /// </summary>
+        /// <param name="list1"></param>
+        /// <param name="list2"></param>
+        /// <returns></returns>
+        public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
+        {
+            ListNode dummy = new ListNode(0);
+            ListNode prev = dummy;
+
+            ListNode p1 = list1, p2 = list2;
+            while (p1 != null && p2 != null)
+            {
+                if (p1.val < p2.val)
+                {
+                    prev.next = p1;
+                    p1 = p1.next;
+                }
+                else
+                {
+                    prev.next = p2;
+                    p2 = p2.next;
+                }
+                prev = prev.next;
+            }
+
+            prev.next = p1 != null ? p1 : p2;
+
+            return dummy.next;
         }
 
         /**
