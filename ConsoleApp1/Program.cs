@@ -53,6 +53,7 @@ namespace ConsoleApp1
             var substituteIndex = 0;
             for (var i = 0; i < nums.Length; i++)
             {
+                // Skips on the third consecutive time the element was found. Since at most we only need two. 
                 if (substituteIndex - 2 >= 0 && nums[substituteIndex - 2] == nums[i])
                 {
                     continue;
