@@ -30,31 +30,8 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Rotate(new int[] {1,1,1,2,2,3}, 3);
-            Rotate(new int[] {0,0,1,1,1,2,2,3}, 4);
-        }
-
-        /// <summary>
-        /// Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
-        /// </summary>
-        /// <param name="nums"></param>
-        /// <param name="k"></param>
-        public static void Rotate(int[] nums, int k)
-        {
-            if (nums.Length == 0) return;
-            if (k == 0) return;
-
-            int n = nums.Length;
-            k = k % n;
-            int[] res = new int[n];
-            for (int i = 0; i < n; i++)
-            {
-                res[(i + k) % n] = nums[i];
-            }
-            for (int i = 0; i < n; i++)
-            {
-                nums[i] = res[i];
-            }
+            Console.WriteLine(RemoveDuplicates(new int[] {1,1,1,2,2,3}));
+            Console.WriteLine(RemoveDuplicates(new int[] {0,0,1,1,1,2,2,3}));
         }
 
         /// <summary>
