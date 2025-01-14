@@ -9,6 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Collections;
 using System.Drawing;
 using System.Numerics;
+using System.Text;
 
 namespace ConsoleApp1
 {
@@ -30,8 +31,30 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Rotate(new int[] { 1, 1, 1, 2, 2, 3 }, 3);
-            Rotate(new int[] { 0, 0, 1, 1, 1, 2, 2, 3 }, 4);
+            Console.WriteLine(MaxProfit(new int[] { 1, 1, 1, 2, 2, 3 }));
+        }
+
+        /// <summary>
+        /// You are given an integer array prices where prices[i] is the price of a given stock
+        /// on the ith day. On each day, you may decide to buy and/or sell the stock. You can 
+        /// only hold at most one share of the stock at any time. However, you can buy it then 
+        /// immediately sell it on the same day. Find and return the maximum profit you can achieve.
+        /// </summary>
+        /// <param name="prices"></param>
+        /// <returns></returns>
+        public static int MaxProfit(int[] prices)
+        {
+            if (prices.Length == 0) return 0;
+
+            int profit = 0;
+
+            for (int i = 1; i < prices.Length; i++)
+            {
+                if (prices[i] > prices[i - 1])
+                    profit += prices[i] - prices[i - 1];
+            }
+
+            return profit;
         }
 
         /// <summary>
