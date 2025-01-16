@@ -10,6 +10,9 @@ using System.Collections;
 using System.Drawing;
 using System.Numerics;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace ConsoleApp1
 {
@@ -31,11 +34,44 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(CanJump(new int[] { 2, 3, 1, 1, 4 }));
+            Console.WriteLine(Jump(new int[] { 2, 3, 1, 1, 4 }));
         }
 
         /// <summary>
-        /// 
+        /// You are given a 0-indexed array of integers nums of length n. You are initially positioned at nums[0].
+        /// Each element nums[i] represents the maximum length of a forward jump from index i.In other words, 
+        /// if you are at nums[i], you can jump to any nums[i + j] where:
+        /// 0 <= j <= nums[i] and
+        /// i + j<n
+        /// Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that 
+        /// you can reach nums[n - 1].
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static int Jump(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            int jumps = 0, farthest = 0, end = 0;
+
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                // Update the farthest point we can reach
+                farthest = Math.Max(farthest, i + nums[i]);
+
+                // If we've reached the current end, we need to jump
+                if (i == end)
+                {
+                    jumps++;
+                    end = farthest; // Update the range for the next jump
+                }
+            }
+
+            return jumps;
+        }
+
+        /// <summary>
+        /// Can jump from end to start.
         /// </summary>
         /// <param name="nums"></param>
         /// <returns></returns>
