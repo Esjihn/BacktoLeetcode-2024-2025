@@ -31,7 +31,28 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(MaxProfit(new int[] { 1, 1, 1, 2, 2, 3 }));
+            Console.WriteLine(CanJump(new int[] { 2, 3, 1, 1, 4 }));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static bool CanJump(int[] nums)
+        {
+            if (nums.Length == 0) return false;
+
+            int finishIndex = nums.Length - 1;
+            for (int i = nums.Length - 1; i >= 0; i--)
+            {
+                if (i + nums[i] >= finishIndex)
+                {
+                    if (i == 0) return true;
+                    finishIndex = i;
+                }
+            }
+            return false;
         }
 
         /// <summary>
