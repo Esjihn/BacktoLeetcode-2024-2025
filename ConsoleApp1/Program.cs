@@ -34,7 +34,46 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(Jump(new int[] { 2, 3, 1, 1, 4 }));
+            Console.WriteLine(HIndex(new int[] { 2, 3, 1, 1, 4 }));
+        }
+
+        /// <summary>
+        /// Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, 
+        /// return the researcher's h-index. According to the definition of h-index on Wikipedia: The h-index is defined as the maximum 
+        /// value of h such that the given researcher has published at least h papers that have each been cited at least h times.
+        /// </summary>
+        /// <param name="citations"></param>
+        /// <returns></returns>
+        public static int HIndex(int[] citations)
+        {
+            if (citations.Length == 0) return 0;
+
+            int n = citations.Length;
+            int[] count = new int[n + 1];
+
+            foreach (int c in citations)
+            {
+                if (c >= n)
+                {
+                    count[n]++;
+                }
+                else
+                {
+                    count[c]++;
+                }
+            }
+
+            int total = 0;
+            for (int i = n; i >= 0; i--)
+            {
+                total += count[i];
+                if (total >= i)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         /// <summary>
