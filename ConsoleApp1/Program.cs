@@ -47,29 +47,26 @@ namespace ConsoleApp1
         /// <returns></returns>
         public int[] ProductExceptSelf(int[] nums)
         {
-            if (nums.Length == 0) return [];
+            if (nums.Length == 0) return new int[0];
 
             int n = nums.Length;
-            int[] right = new int[n];
             int[] res = new int[n];
 
+            // Initialize the result array to store left products.
             int prod = 1;
+            for (int i = 0; i < n; i++)
+            {
+                res[i] = prod;
+                prod *= nums[i];
+            }
+
+            // Multiply the result array with the right products.
+            prod = 1;
             for (int i = n - 1; i >= 0; i--)
             {
-                prod *= nums[i];
-                right[i] = prod;
-            }
-
-            prod = 1;
-            for (int i = 0; i < n - 1; i++)
-            {
-                int lp = prod;
-                int rp = right[i + 1];
-
-                res[i] = rp * lp;
+                res[i] *= prod;
                 prod *= nums[i];
             }
-            res[n - 1] = prod;
 
             return res;
         }
