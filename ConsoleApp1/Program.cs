@@ -38,6 +38,43 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an integer array nums, return an array answer such that answer[i] is equal 
+        /// to the product of all the elements of nums except nums[i].
+        /// The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+        /// You must write an algorithm that runs in O(n) time and without using the division operation.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int[] ProductExceptSelf(int[] nums)
+        {
+            if (nums.Length == 0) return [];
+
+            int n = nums.Length;
+            int[] right = new int[n];
+            int[] res = new int[n];
+
+            int prod = 1;
+            for (int i = n - 1; i >= 0; i--)
+            {
+                prod *= nums[i];
+                right[i] = prod;
+            }
+
+            prod = 1;
+            for (int i = 0; i < n - 1; i++)
+            {
+                int lp = prod;
+                int rp = right[i + 1];
+
+                res[i] = rp * lp;
+                prod *= nums[i];
+            }
+            res[n - 1] = prod;
+
+            return res;
+        }
+
+        /// <summary>
         /// Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, 
         /// return the researcher's h-index. According to the definition of h-index on Wikipedia: The h-index is defined as the maximum 
         /// value of h such that the given researcher has published at least h papers that have each been cited at least h times.
