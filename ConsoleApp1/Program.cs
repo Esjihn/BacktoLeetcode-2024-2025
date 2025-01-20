@@ -36,7 +36,43 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(CanCompleteCircuit(new int[] { 2, 3, 1, 1, 4 }, new int[] { 2, 3, 1, 1, 4 }));
+            Console.WriteLine(IntToRoman(8));
+        }
+
+        /// <summary>
+        /// Seven different symbols represent Roman numerals with the following values:
+        /// Symbol	Value
+        /// I	1
+        /// V	5
+        /// X	10
+        /// L	50
+        /// C	100
+        /// D	500
+        /// M	1000
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static string IntToRoman(int num)
+        {
+            if (num == 0) return string.Empty;
+            var result = new StringBuilder();
+
+            Dictionary<int, string> rdmap = new Dictionary<int, string>()
+            {
+                {1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+                {100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+                {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"}
+            };
+            
+            foreach (var (value, symbol) in rdmap)
+            {
+                while (num >= value)
+                {
+                    result.Append(symbol);
+                    num -= value;
+                }
+            }
+            return result.ToString();
         }
 
         /// <summary>
