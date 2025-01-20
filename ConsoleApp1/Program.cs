@@ -13,6 +13,8 @@ using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using static System.Collections.Specialized.BitVector32;
+using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -34,7 +36,40 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(HIndex(new int[] { 2, 3, 1, 1, 4 }));
+            Console.WriteLine(CanCompleteCircuit(new int[] { 2, 3, 1, 1, 4 }, new int[] { 2, 3, 1, 1, 4 }));
+        }
+
+        /// <summary>
+        /// There are n gas stations along a circular route, where the amount of gas at the ith station is gas[i].
+        /// You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station 
+        /// to its next(i + 1)th station. You begin the journey with an empty tank at one of the gas stations.
+        /// Given two integer arrays gas and cost, return the starting gas station's index if you can travel around 
+        /// the circuit once in the clockwise direction, otherwise return -1. If there exists a solution, it is guaranteed to be unique.
+        /// </summary>
+        /// <param name="gas"></param>
+        /// <param name="cost"></param>
+        /// <returns></returns>
+        public static int CanCompleteCircuit(int[] gas, int[] cost)
+        {
+            if (gas.Length == 0) return 0;
+            if (cost.Length == 0) return 0;
+
+            int sum = 0;
+            int maxIndex = -1;
+            int maxSum = int.MinValue;
+
+            for (int i = gas.Length - 1; i >= 0; i--)
+            {
+                sum += gas[i] - cost[i];
+
+                if (sum > maxSum)
+                {
+                    maxIndex = i;
+                    maxSum = sum;
+                }
+            }
+
+            return sum < 0 ? -1 : maxIndex;
         }
 
         /// <summary>
