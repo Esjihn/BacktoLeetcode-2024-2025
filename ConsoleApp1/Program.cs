@@ -49,6 +49,12 @@ namespace ConsoleApp1
         public static string Convert(string s, int numRows)
         {
             if (string.IsNullOrEmpty(s) || numRows == 0) return string.Empty;
+            
+            if (numRows == 1)
+            {
+                return s;
+            }
+
             Span<char> result = stackalloc char[s.Length];
 
             var resultIndex = 0;
