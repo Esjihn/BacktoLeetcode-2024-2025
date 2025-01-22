@@ -36,7 +36,40 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(ReverseWords("  hello world  "));
+            Console.WriteLine(Convert("PAYPALISHIRING", 4));
+        }
+
+        /// <summary>
+        /// The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this:
+        /// (you may want to display this pattern in a fixed font for better legibility)
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="numRows"></param>
+        /// <returns></returns>
+        public static string Convert(string s, int numRows)
+        {
+            if (string.IsNullOrEmpty(s) || numRows == 0) return string.Empty;
+            Span<char> result = stackalloc char[s.Length];
+
+            var resultIndex = 0;
+            var period = numRows * 2 - 2;
+
+            for (int row = 0; row < numRows; row++)
+            {
+                var increment = 2 * row;
+
+                for (int i = row; i < s.Length; i += increment)
+                {
+                    result[resultIndex++] = s[i];
+
+                    if (increment != period)
+                    {
+                        increment = period - increment;
+                    }
+                }
+            }
+
+            return result.ToString();
         }
 
         /// <summary>
