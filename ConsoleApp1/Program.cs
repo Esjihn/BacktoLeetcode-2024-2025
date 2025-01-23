@@ -15,6 +15,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using static System.Collections.Specialized.BitVector32;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
+using System.Runtime.Intrinsics.X86;
 
 namespace ConsoleApp1
 {
@@ -36,7 +38,39 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(Convert("PAYPALISHIRING", 4));
+            foreach (var sum in TwoSumTwo([2,7,11,15], 9))
+            {
+                Console.WriteLine(sum);
+            }
+        }
+
+        /// <summary>
+        /// Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, 
+        /// find two numbers such that they add up to a specific target number. Let these two numbers 
+        /// be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+        /// Return the indices of the two numbers, index1 and index2, added by one as an integer array[index1, index2] of length 2.
+        /// The tests are generated such that there is exactly one solution.You may not use the same element twice.
+        /// Your solution must use only constant extra space.
+        /// </summary>
+        /// <param name="numbers"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static int[] TwoSumTwo(int[] numbers, int target)
+        {
+            var intArray = new int[0];
+            if (target == 0) return intArray;
+            if (numbers.Length == 0) return intArray;
+
+            int left = 0;
+            int right = numbers.Length - 1;
+            while (left < right)
+            {
+                int sum = numbers[left] + numbers[right];
+                if (sum == target) break;
+                if (sum < target) left++;
+                if (sum > target) right--;
+            }
+            return [left + 1, right + 1];
         }
 
         /// <summary>
