@@ -17,6 +17,7 @@ using static System.Collections.Specialized.BitVector32;
 using System.Threading.Tasks;
 using System.Reflection.Metadata;
 using System.Runtime.Intrinsics.X86;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ConsoleApp1
 {
@@ -38,10 +39,40 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            foreach (var sum in TwoSumTwo([2,7,11,15], 9))
+            Console.WriteLine(MaxArea([1, 8, 6, 2, 5, 4, 8, 3, 7]));
+        }
+
+        /// <summary>
+        /// You are given an integer array height of length n. There are n vertical lines
+        /// drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). 
+        /// Find two lines that together with the x-axis form a container, such that the 
+        /// container contains the most water. Return the maximum amount of water a container can store.
+        /// Notice that you may not slant the container.
+        /// </summary>
+        /// <param name="height"></param>
+        public static int MaxArea(int[] height)
+        {
+            if (height.Length == 0) return 0;
+
+            int maxArea = 0;
+            int i = 0, j = height.Length - 1;
+
+            while (i < j)
             {
-                Console.WriteLine(sum);
+                int curWidth = j - i;
+                int curHeight = Math.Min(height[i], height[j]);
+                maxArea = Math.Max(maxArea, curWidth * curHeight);
+
+                if (height[i] <= height[j])
+                {
+                    i++;
+                }
+                else
+                {
+                    j--;
+                }
             }
+            return maxArea;
         }
 
         /// <summary>
