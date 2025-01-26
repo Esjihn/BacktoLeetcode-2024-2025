@@ -39,7 +39,35 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(ThreeSum([-1, 0, 1, 2, -1, -4]));
+            Console.WriteLine(MinSubArrayLen(7, [-1, 0, 1, 2, -1, -4]));
+        }
+
+        /// <summary>
+        /// Given an array of positive integers nums and a positive integer target, 
+        /// return the minimal length of a subarray whose sum is greater than or 
+        /// equal to target.If there is no such subarray, return 0 instead.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static int MinSubArrayLen(int target, int[] nums)
+        {
+            if (target == 0) return 0;
+            if (nums.Length == 0) return 0;
+
+            int left = 0, right = 0, sum = 0, min = Int32.MaxValue;
+            while (right < nums.Length)
+            {
+                sum += nums[right];
+                right++;
+                while (sum >= target)
+                {
+                    min = Math.Min(min, right - left);
+                    sum -= nums[left];
+                    left++;
+                }
+            }
+            return min == Int32.MaxValue ? 0 : min;
         }
 
         public static IList<IList<int>> ThreeSum(int[] nums)
