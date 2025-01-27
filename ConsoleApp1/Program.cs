@@ -1,23 +1,5 @@
-﻿using System.Diagnostics;
-using System;
-using System.Diagnostics.Metrics;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Collections;
-using System.Drawing;
-using System.Numerics;
+﻿using System.Data.SqlTypes;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using static System.Collections.Specialized.BitVector32;
-using System.Threading.Tasks;
-using System.Reflection.Metadata;
-using System.Runtime.Intrinsics.X86;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace ConsoleApp1
 {
@@ -40,6 +22,35 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(MinSubArrayLen(7, [-1, 0, 1, 2, -1, -4]));
+        }
+
+        /// <summary>
+        /// Given a string s, find the length of the longest
+        /// substring without repeating characters.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static int LengthOfLongestSubstring(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return 0;
+
+            var charSet = new HashSet<char>();
+            int left = 0, right = 0, maxLength = 0;
+            while (right < s.Length)
+            {
+                if (!charSet.Contains(s[right]))
+                {
+                    charSet.Add(s[right]);
+                    right++;
+                    maxLength = Math.Max(maxLength, charSet.Count);
+                }
+                else
+                {
+                    charSet.Remove(s[left]);
+                    left++;
+                }
+            }
+            return maxLength;
         }
 
         /// <summary>
