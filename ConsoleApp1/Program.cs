@@ -23,7 +23,22 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(MinSubArrayLen(7, [-1, 0, 1, 2, -1, -4]));
+            Console.WriteLine(MinSubArrayLen(7, new int[] { -1, 0, 1, 2, -1, -4 }));
+        }
+
+        public IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            if (strs.Length == 0) return new List<IList<string>>();
+            var map = new Dictionary<string, List<string>>();
+
+            foreach (var str in strs)
+            {
+                var key = String.Concat(str.OrderBy(c => c));
+                if (!map.ContainsKey(key)) map[key] = new List<string>();
+                map[key].Add(str);
+            }
+
+            return map.Values.Cast<IList<string>>().ToList();
         }
 
         /// <summary>
@@ -234,7 +249,7 @@ namespace ConsoleApp1
                 if (sum < target) left++;
                 if (sum > target) right--;
             }
-            return [left + 1, right + 1];
+            return new int[] { left + 1, right + 1 };
         }
 
         /// <summary>
