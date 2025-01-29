@@ -1,4 +1,6 @@
-﻿using System.Data.SqlTypes;
+﻿using System.ComponentModel;
+using System.Data.Common;
+using System.Data.SqlTypes;
 using System.Text;
 
 namespace ConsoleApp1
@@ -22,6 +24,59 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(MinSubArrayLen(7, [-1, 0, 1, 2, -1, -4]));
+        }
+
+        /// <summary>
+        /// Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according 
+        /// to the following rules: Each row must contain the digits 1-9 without repetition. 
+        /// Each column must contain the digits 1-9 without repetition.
+        /// Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
+        public static bool IsValidSudoku(char[][] board)
+        {
+            if (!board.Any()) return false;
+
+            HashSet<char>[] row = new HashSet<char>[9];
+            HashSet<char>[] col = new HashSet<char>[9];
+            HashSet<char>[] box = new HashSet<char>[9];
+            for (int i = 0; i < 9; i++)
+            {
+                row[i] = new HashSet<char>();
+                col[i] = new HashSet<char>();
+                box[i] = new HashSet<char>();
+            }
+
+            for (int r = 0; r < board.Length; r++)
+            {
+                for (int c = 0; c < board[r].Length; c++)
+                {
+                    char elem = board[r][c];
+                    if (elem == '.')
+                    {
+                        continue;
+                    }
+
+                    if (!row[r].Add(elem))
+                    {
+                        return false;
+                    }
+
+                    if (!col[c].Add(elem))
+                    {
+                        return false;
+                    }
+
+                    int b = (3 * (r / 3)) + (c / 3);
+                    if (!box[b].Add(elem))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
