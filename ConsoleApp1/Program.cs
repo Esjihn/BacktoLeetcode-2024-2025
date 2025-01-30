@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Data.Common;
 using System.Data.SqlTypes;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ConsoleApp1
@@ -23,7 +24,34 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            Console.WriteLine(MinSubArrayLen(7, new int[] { -1, 0, 1, 2, -1, -4 }));
+            Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given an unsorted array of integers nums, 
+        /// return the length of the longest consecutive elements sequence.
+        /// You must write an algorithm that runs in O(n) time.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public static int LongestConsecutive(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            HashSet<int> set = new HashSet<int>(nums);
+            int maxLength = 0;
+
+            foreach (int num in nums)
+            {
+                if (set.Contains(num - 1)) continue;
+
+                int length = 0;
+                while (set.Contains(num + length)) length++;
+
+                maxLength = Math.Max(maxLength, length);
+            }
+
+            return maxLength;
         }
 
         public IList<IList<string>> GroupAnagrams(string[] strs)
