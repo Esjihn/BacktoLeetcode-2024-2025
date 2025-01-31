@@ -28,6 +28,33 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals,
+        /// and return an array of the non-overlapping intervals that cover all the intervals in the input.
+        /// </summary>
+        /// <param name="intervals"></param>
+        /// <returns></returns>
+        public int[][] Merge(int[][] intervals)
+        {
+            if (intervals.Length == 0) return [];
+
+            var result = new List<int[]>();
+            Array.Sort(intervals, (a, b) => a[0] - b[0]);
+            result.Add(intervals[0]);
+            for (int i = 1; i < intervals.Length; i++)
+            {
+                if (intervals[i][0] <= result[result.Count - 1][1])
+                {
+                    result[result.Count - 1][1] = Math.Max(result[result.Count - 1][1], intervals[i][1]);
+                }
+                else
+                {
+                    result.Add(intervals[i]);
+                }
+            }
+            return result.ToArray();
+        }
+
+        /// <summary>
         /// Given an unsorted array of integers nums, 
         /// return the length of the longest consecutive elements sequence.
         /// You must write an algorithm that runs in O(n) time.
