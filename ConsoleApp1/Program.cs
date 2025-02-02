@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Data.Common;
 using System.Data.SqlTypes;
+using System.Diagnostics.Metrics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -25,6 +26,53 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] 
+        /// represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. 
+        /// You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
+        /// 
+        /// Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals
+        /// still does not have any overlapping intervals (merge overlapping intervals if necessary).
+        /// Return intervals after the insertion.
+        /// </summary>
+        /// <param name="intervals"></param>
+        /// <param name="newInterval"></param>
+        /// <returns></returns>
+        public static int[][] Insert(int[][] intervals, int[] newInterval)
+        {
+            if (intervals.Length == 0) return [];
+
+            var result = new List<int[]>();
+
+            // Iterate through intervals and add non-overlapping intervals before newInterval
+            int i = 0;
+            while (i < intervals.Length && intervals[i][1] < newInterval[0])
+            {
+                result.Add(intervals[i]);
+                i++;
+            }
+
+            // Merge overlapping intervals
+            while (i < intervals.Length && intervals[i][0] <= newInterval[1])
+            {
+                newInterval[0] = Math.Min(newInterval[0], intervals[i][0]);
+                newInterval[1] = Math.Max(newInterval[1], intervals[i][1]);
+                i++;
+            }
+
+            // Add merged newInterval
+            result.Add(newInterval);
+
+            // Add non-overlapping intervals after newInterval
+            while (i < intervals.Length)
+            {
+                result.Add(intervals[i]);
+                i++;
+            }
+
+            return result.ToArray();
         }
 
         /// <summary>
