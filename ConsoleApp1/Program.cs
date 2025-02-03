@@ -31,6 +31,43 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// You are given an absolute path for a Unix-style file system, 
+        /// which always begins with a slash '/'. Your task is to transform 
+        /// this absolute path into its simplified canonical path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string SimplifyPath(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return string.Empty;
+            var finalizedPath = string.Empty;
+
+            var stack = new Stack<string>();
+            var parts = path.Split('/');
+            foreach (var part in parts)
+            {
+                if (part == "..")
+                {
+                    if (stack.Count > 0)
+                    {
+                        stack.Pop();
+                    }
+                }
+                else if (part != "." && part != "")
+                {
+                    stack.Push(part);
+                }
+            }
+            var result = new StringBuilder();
+            while (stack.Count > 0)
+            {
+                result.Insert(0, stack.Pop());
+                result.Insert(0, "/");
+            }
+            return result.Length == 0 ? "/" : result.ToString();
+        }
+
+        /// <summary>
         /// There are some spherical balloons taped onto a flat wall that represents the XY-plane. 
         /// The balloons are represented as a 2D integer array points where points[i] = [xstart, xend] 
         /// denotes a balloon whose horizontal diameter stretches between xstart and xend. 
