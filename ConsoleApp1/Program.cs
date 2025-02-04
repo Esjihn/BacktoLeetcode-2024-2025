@@ -30,6 +30,44 @@ namespace ConsoleApp1
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
         }
 
+        public class MinStack
+        {
+            Stack<(int val, int minVal)> stack;
+            int minVal = int.MaxValue;
+            public MinStack()
+            {
+                stack = new Stack<(int, int)>();
+            }
+            public void Push(int val)
+            {
+                if (minVal > val)
+                {
+                    minVal = val;
+                }
+                stack.Push((val, minVal));
+            }
+            public void Pop()
+            {
+                stack.Pop();
+                if (stack.Count > 0)
+                {
+                    minVal = stack.Peek().minVal;
+                }
+                else
+                {
+                    minVal = int.MaxValue;
+                }
+            }
+            public int Top()
+            {
+                return stack.Peek().val;
+            }
+            public int GetMin()
+            {
+                return stack.Peek().minVal;
+            }
+        }
+
         /// <summary>
         /// You are given an absolute path for a Unix-style file system, 
         /// which always begins with a slash '/'. Your task is to transform 
