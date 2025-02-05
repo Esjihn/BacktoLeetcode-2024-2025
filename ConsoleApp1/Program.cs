@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Diagnostics.Metrics;
 using System.IO;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -25,9 +26,38 @@ namespace ConsoleApp1
     /// </summary>
     public class Solution
     {
+        private static Dictionary<string, Func<int, int, int>> s_Funcs = new() {
+              { "+", (a, b) => a + b },
+              { "-", (a, b) => b - a },
+              { "*", (a, b) => a * b },
+              { "/", (a, b) => b / a },
+        };
+
+
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
+        /// Evaluate the expression. Return an integer that represents the value of the expression.
+        /// </summary>
+        /// <param name="tokens"></param>
+        /// <returns></returns>
+        public static int EvalRPN(string[] tokens)
+        {
+            if (!tokens.Any()) return 0;
+
+            Stack<int> data = new();
+
+            foreach (string token in tokens)
+                if (int.TryParse(token, out int value))
+                    data.Push(value);
+                else
+                    data.Push(s_Funcs[token](data.Pop(), data.Pop()));
+
+            return data.Pop();
         }
 
         public class MinStack
