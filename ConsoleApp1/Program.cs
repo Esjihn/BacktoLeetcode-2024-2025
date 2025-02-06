@@ -40,6 +40,39 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// You are given two non-empty linked lists representing two non-negative integers. 
+        /// The digits are stored in reverse order, and each of their nodes contains a single digit. 
+        /// Add the two numbers and return the sum as a linked list. You may assume the two numbers 
+        /// do not contain any leading zero, except the number 0 itself.
+        /// </summary>
+        /// <param name="l1"></param>
+        /// <param name="l2"></param>
+        /// <returns></returns>
+        public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+        {
+            if (l1 == null) return new ListNode();
+            if (l2 == null) return new ListNode();
+
+            var head = new ListNode();
+            var pointer = head;
+            int curval = 0;
+            while (l1 != null || l2 != null)
+            {
+                curval = (l1 == null ? 0 : l1.val) + (l2 == null ? 0 : l2.val) + curval;
+                pointer.next = new ListNode(curval % 10);
+                pointer = pointer.next;
+                curval = curval / 10;
+                l1 = l1?.next;
+                l2 = l2?.next;
+            }
+            if (curval != 0)
+            {
+                pointer.next = new ListNode(curval);
+            }
+            return head.next;
+        }
+
+        /// <summary>
         /// You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
         /// Evaluate the expression. Return an integer that represents the value of the expression.
         /// </summary>
