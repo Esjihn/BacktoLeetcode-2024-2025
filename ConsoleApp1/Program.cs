@@ -1,15 +1,33 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System;
+using System.ComponentModel;
 using System.Data.Common;
 using System.Data.SqlTypes;
+using System.Diagnostics.Contracts;
 using System.Diagnostics.Metrics;
+using System.Drawing;
 using System.IO;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleApp1
 {
+    public class Node
+    {
+        public int val;
+        public Node next;
+        public Node random;
+        public Node(int _val)
+        {
+            val = _val;
+            next = null;
+            random = null;
+        }
+    }
     public class ListNode
     {
         public int val;
@@ -40,6 +58,39 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// A linked list of length n is given such that each node contains an additional random pointer,
+        /// which could point to any node in the list, or null.
+        /// Construct a deep copy of the list.The deep copy should consist of exactly n brand new nodes, 
+        /// where each new node has its value set to the value of its corresponding original node.
+        /// Both the next and random pointer of the new nodes should point to new nodes in the copied list
+        /// such that the pointers in the original list and copied list represent the same list state.
+        /// None of the pointers in the new list should point to nodes in the original list.
+        /// For example, if there are two nodes X and Y in the original list, where X.random --> Y, 
+        /// then for the corresponding two nodes x and y in the copied list, x.random --> y.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public static Node CopyRandomList(Node head)
+        {
+            if (head == null) return new Node(0);
+            Dictionary<Node, Node> oldToNew = new Dictionary<Node, Node>();
+            Node curr = head;
+            while (curr != null)
+            {
+                oldToNew[curr] = new Node(curr.val);
+                curr = curr.next;
+            }
+            curr = head;
+            while (curr != null)
+            {
+                oldToNew[curr].next = curr.next != null ? oldToNew[curr.next] : null;
+                oldToNew[curr].random = curr.random != null ? oldToNew[curr.random] : null;
+                curr = curr.next;
+            }
+            return oldToNew[head];
+        }
+
+        /// <summary>
         /// You are given two non-empty linked lists representing two non-negative integers. 
         /// The digits are stored in reverse order, and each of their nodes contains a single digit. 
         /// Add the two numbers and return the sum as a linked list. You may assume the two numbers 
@@ -52,7 +103,6 @@ namespace ConsoleApp1
         {
             if (l1 == null) return new ListNode();
             if (l2 == null) return new ListNode();
-
             var head = new ListNode();
             var pointer = head;
             int curval = 0;
@@ -81,15 +131,12 @@ namespace ConsoleApp1
         public static int EvalRPN(string[] tokens)
         {
             if (!tokens.Any()) return 0;
-
             Stack<int> data = new();
-
             foreach (string token in tokens)
                 if (int.TryParse(token, out int value))
                     data.Push(value);
                 else
                     data.Push(s_Funcs[token](data.Pop(), data.Pop()));
-
             return data.Pop();
         }
 
