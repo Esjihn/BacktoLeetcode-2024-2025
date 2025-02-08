@@ -58,6 +58,44 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the head of a singly linked list and two integers left and right where left <= right, 
+        /// reverse the nodes of the list from position left to position right, and return the reversed list.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static ListNode ReverseBetween(ListNode head, int left, int right)
+        {
+            if (head == null || left == right)
+                return head;
+
+            ListNode dummy = new ListNode(0);
+            dummy.next = head;
+            ListNode prev = dummy;
+
+            // Move prev to the node just before the left position
+            for (int i = 1; i < left; i++)
+            {
+                prev = prev.next;
+            }
+
+            ListNode current = prev.next;
+            ListNode next = null;
+
+            // Reverse the nodes from left to right
+            for (int i = left; i < right; i++)
+            {
+                next = current.next;
+                current.next = next.next;
+                next.next = prev.next;
+                prev.next = next;
+            }
+
+            return dummy.next;
+        }
+
+        /// <summary>
         /// A linked list of length n is given such that each node contains an additional random pointer,
         /// which could point to any node in the list, or null.
         /// Construct a deep copy of the list.The deep copy should consist of exactly n brand new nodes, 
