@@ -57,6 +57,52 @@ namespace ConsoleApp1
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
         }
 
+        /// <summary>
+        /// Given the head of a linked list, remove the nth node from the end of the list
+        /// and return its head.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            int length = 0;
+            ListNode curr = head;
+
+            // Find the length of the linked list
+            while (curr != null)
+            {
+                length++;
+                curr = curr.next;
+            }
+
+            int traverseTill = length - n - 1;
+            curr = head;
+
+            // Traverse to the node before the one to be removed
+            for (int i = 0; i < traverseTill; i++)
+            {
+                curr = curr.next;
+            }
+
+            // Remove the nth node from the end
+            if (traverseTill == -1)
+            {
+                return head.next;
+            }
+            else
+            {
+                curr.next = curr.next.next;
+                return head;
+            }
+        }
+
+        /// <summary>
+        /// Reverse K group.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
         public static ListNode ReverseKGroup(ListNode head, int k)
         {
             if (head == null || k == 1)
