@@ -58,6 +58,32 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the head of a sorted linked list, delete all nodes that have duplicate numbers,
+        /// leaving only distinct numbers from the original list. 
+        /// Return the linked list sorted as well.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public static ListNode DeleteDuplicates(ListNode head)
+        {
+            var dummyHead = new ListNode(0, head);
+            var prev = dummyHead;
+
+            while (prev != null)
+            {
+                // Found value that has duplicates
+                if (prev.next != null && prev.next.next != null && prev.next.val == prev.next.next.val)
+                {
+                    var duplicateValue = prev.next.val;
+                    while (prev.next != null && prev.next.val == duplicateValue) prev.next = prev.next.next;
+                }
+                else prev = prev.next;
+            }
+
+            return dummyHead.next;
+        }
+
+        /// <summary>
         /// Given the head of a linked list, remove the nth node from the end of the list
         /// and return its head.
         /// </summary>
