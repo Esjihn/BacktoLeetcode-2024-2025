@@ -58,6 +58,41 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the head of a linked list, rotate the list to the right by k places.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public static ListNode RotateRight(ListNode head, int k)
+        {
+            if (head == null)
+                return new ListNode();
+
+            var length = 1;
+            var tail = head;
+
+            while (tail.next != null)
+            {
+                length++;
+                tail = tail.next;
+            }
+
+            tail.next = head;
+
+            k = length - k % length;
+
+            for (var i = 0; i < k; i++)
+            {
+                head = head.next;
+                tail = tail.next;
+            }
+
+            tail.next = null;
+
+            return head;
+        }
+
+        /// <summary>
         /// Given the head of a sorted linked list, delete all nodes that have duplicate numbers,
         /// leaving only distinct numbers from the original list. 
         /// Return the linked list sorted as well.
