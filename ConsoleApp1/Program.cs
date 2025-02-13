@@ -58,6 +58,43 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the head of a linked list and a value x, partition it such 
+        /// that all nodes less than x come before nodes greater than or equal to x.
+        /// You should preserve the original relative order of the nodes in each of
+        /// the two partitions.
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static ListNode Partition(ListNode head, int x)
+        {
+            if (head == null)
+                return new ListNode();
+
+            var dummy = new ListNode(0);
+            var front = dummy;
+            var dummy2 = new ListNode(0);
+            var back = dummy2;
+            while (head != null)
+            {
+                if (head.val < x)
+                {
+                    front.next = head;
+                    front = front.next;
+                }
+                else
+                {
+                    back.next = head;
+                    back = back.next;
+                }
+                head = head.next;
+            }
+            back.next = null;
+            front.next = dummy2.next;
+            return dummy.next;
+        }
+
+        /// <summary>
         /// Given the head of a linked list, rotate the list to the right by k places.
         /// </summary>
         /// <param name="head"></param>
