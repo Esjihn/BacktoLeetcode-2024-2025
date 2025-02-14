@@ -13,6 +13,7 @@ using System.Text;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.VisualBasic;
 
 namespace ConsoleApp1
 {
@@ -55,6 +56,75 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+        /// Implement the LRUCache class: LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+        /// int get(int key) Return the value of the key if the key exists, otherwise return -1. void put(int key, int value)
+        /// Update the value of the key if the key exists.Otherwise, add the key-value pair to the cache.
+        /// If the number of keys exceeds the capacity from this operation, evict the least recently used key. The functions 
+        /// get and put must each run in O(1) average time complexity.
+        /// </summary>
+        public class LRUCache
+        {
+
+            private readonly int capacity;
+            private readonly Dictionary<int, LinkedListNode<CacheItem>> cacheMap;
+            private readonly LinkedList<CacheItem> cacheList;
+
+            public LRUCache(int capacity)
+            {
+                this.capacity = capacity;
+                cacheMap = new Dictionary<int, LinkedListNode<CacheItem>>(capacity);
+                cacheList = new LinkedList<CacheItem>();
+            }
+
+            public int Get(int key)
+            {
+                if (cacheMap.TryGetValue(key, out var node))
+                {
+                    cacheList.Remove(node);
+                    cacheList.AddFirst(node);
+                    return node.Value.Value;
+                }
+                return -1;
+            }
+
+            public void Put(int key, int value)
+            {
+                if (cacheMap.TryGetValue(key, out var node))
+                {
+                    node.Value.Value = value;
+                    cacheList.Remove(node);
+                    cacheList.AddFirst(node);
+                }
+                else
+                {
+                    if (cacheMap.Count >= capacity)
+                    {
+                        var lastNode = cacheList.Last;
+                        cacheMap.Remove(lastNode.Value.Key);
+                        cacheList.RemoveLast();
+                    }
+
+                    var newNode = new LinkedListNode<CacheItem>(new CacheItem(key, value));
+                    cacheMap.Add(key, newNode);
+                    cacheList.AddFirst(newNode);
+                }
+            }
+
+            private class CacheItem
+            {
+                public int Key { get; }
+                public int Value { get; set; }
+
+                public CacheItem(int key, int value)
+                {
+                    Key = key;
+                    Value = value;
+                }
+            }
         }
 
         /// <summary>
