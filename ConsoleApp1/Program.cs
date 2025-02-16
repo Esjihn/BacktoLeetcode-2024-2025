@@ -76,6 +76,31 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given two integer arrays inorder and postorder where inorder is the inorder traversal 
+        /// of a binary tree and postorder is the postorder traversal of the same tree, construct 
+        /// and return the binary tree.
+        /// </summary>
+        /// <param name="inorder"></param>
+        /// <param name="postorder"></param>
+        /// <returns></returns>
+        public static TreeNode BuildTree2(int[] inorder, int[] postorder)
+        {
+            var n = inorder.Length;
+
+            if (postorder.Length == 0)
+            {
+                return null;
+            }
+            var lastVal = postorder.Last();
+            var root = new TreeNode(lastVal);
+
+            var idx = new List<int>(inorder).IndexOf(lastVal);
+            root.left = BuildTree2(inorder[0..idx], postorder[0..idx]);
+            root.right = BuildTree2(inorder[(idx + 1)..n], postorder[idx..(n - 1)]);
+            return root;
+        }
+
+        /// <summary>
         /// Given two integer arrays preorder and inorder where preorder is the preorder traversal 
         /// of a binary tree and inorder is the inorder traversal of the same tree, 
         /// construct and return the binary tree.
