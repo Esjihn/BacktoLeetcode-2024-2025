@@ -17,6 +17,7 @@ using Microsoft.VisualBasic;
 
 namespace ConsoleApp1
 {
+
     public class Node
     {
         public int val;
@@ -40,6 +41,20 @@ namespace ConsoleApp1
         }
     }
 
+    //Definition for a binary tree node.
+    public class TreeNode
+    {
+        public int val;
+        public TreeNode left;
+        public TreeNode right;
+        public TreeNode(int val=0, TreeNode left = null, TreeNode right = null) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+
     /// <summary>
     /// Main Program 2024-2025 leetcode grind... 
     /// </summary>
@@ -52,6 +67,8 @@ namespace ConsoleApp1
               { "/", (a, b) => b / a },
         };
 
+        private int i;
+        private Dictionary<int, int> inorderMap;
 
         public static void Main()
         {
@@ -59,14 +76,51 @@ namespace ConsoleApp1
         }
 
         /// <summary>
-        /// Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
-        /// Implement the LRUCache class: LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
-        /// int get(int key) Return the value of the key if the key exists, otherwise return -1. void put(int key, int value)
-        /// Update the value of the key if the key exists.Otherwise, add the key-value pair to the cache.
-        /// If the number of keys exceeds the capacity from this operation, evict the least recently used key. The functions 
-        /// get and put must each run in O(1) average time complexity.
+        /// Given two integer arrays preorder and inorder where preorder is the preorder traversal 
+        /// of a binary tree and inorder is the inorder traversal of the same tree, 
+        /// construct and return the binary tree.
         /// </summary>
-        public class LRUCache
+        /// <param name="preorder"></param>
+        /// <param name="inorder"></param>
+        /// <returns></returns>
+        public TreeNode BuildTree(int[] preorder, int[] inorder)
+        {
+            i = 0;
+            inorderMap = new Dictionary<int, int>();
+
+            for (int idx = 0; idx < inorder.Length; idx++)
+            {
+                inorderMap[inorder[idx]] = idx;
+            }
+
+            return Helper(preorder, 0, inorder.Length - 1);
+        }
+
+        private TreeNode Helper(int[] preorder, int j, int k)
+        {
+            if (j > k)
+            {
+                return null;
+            }
+
+            int nodeVal = preorder[i++];
+            TreeNode node = new TreeNode(nodeVal);
+            int idx = inorderMap[nodeVal];
+            node.left = Helper(preorder, j, idx - 1);
+            node.right = Helper(preorder, idx + 1, k);
+
+            return node;
+        }
+
+    /// <summary>
+    /// Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+    /// Implement the LRUCache class: LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+    /// int get(int key) Return the value of the key if the key exists, otherwise return -1. void put(int key, int value)
+    /// Update the value of the key if the key exists.Otherwise, add the key-value pair to the cache.
+    /// If the number of keys exceeds the capacity from this operation, evict the least recently used key. The functions 
+    /// get and put must each run in O(1) average time complexity.
+    /// </summary>
+    public class LRUCache
         {
 
             private readonly int capacity;
@@ -650,7 +704,7 @@ namespace ConsoleApp1
 
             foreach (var str in strs)
             {
-                var key = String.Concat(str.OrderBy(c => c));
+                var key = System.String.Concat(str.OrderBy(c => c));
                 if (!map.ContainsKey(key)) map[key] = new List<string>();
                 map[key].Add(str);
             }
