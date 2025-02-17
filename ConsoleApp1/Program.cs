@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.VisualBasic;
+using System.Reflection;
 
 namespace ConsoleApp1
 {
@@ -30,6 +31,30 @@ namespace ConsoleApp1
             random = null;
         }
     }
+
+    public class NodeC
+    {
+        public int val;
+        public NodeC left;
+        public NodeC right;
+        public NodeC next;
+
+        public NodeC() { }
+
+        public NodeC(int _val)
+        {
+            val = _val;
+        }
+
+        public NodeC(int _val, NodeC _left, NodeC _right, NodeC _next)
+        {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    }
+
     public class ListNode
     {
         public int val;
@@ -73,6 +98,34 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Populate each next pointer to point to its next right node. 
+        /// If there is no next right node, the next pointer should be set to NULL.
+        /// Initially, all next pointers are set to NULL.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static NodeC Connect(NodeC root)
+        {
+            if (root == null) return root;
+            Queue<NodeC> q = new Queue<NodeC>();
+            q.Enqueue(root);
+            while (q.Count > 0)
+            {
+                int count = q.Count;
+                NodeC prev = null;
+                for (int i = 0; i < count; i++)
+                {
+                    NodeC cur = q.Dequeue();
+                    if (cur.right != null) q.Enqueue(cur.right);
+                    if (cur.left != null) q.Enqueue(cur.left);
+                    cur.next = prev;
+                    prev = cur;
+                }
+            }
+            return root;
         }
 
         /// <summary>
