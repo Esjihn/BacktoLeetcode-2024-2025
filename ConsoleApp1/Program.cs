@@ -101,6 +101,47 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the root of a binary tree, flatten the tree into a "linked list":
+        /// The "linked list" should use the same TreeNode class where the right child 
+        /// pointer points to the next node in the list and the left child pointer is always null.
+        /// The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+        /// </summary>
+        /// <param name="root"></param>
+        public static void Flatten(TreeNode root)
+        {
+            var stack = new Stack<TreeNode>();
+            stack.Push(root);
+
+            TreeNode previous = null;
+
+            while (stack.Count > 0)
+            {
+                var node = stack.Pop();
+
+                if (node != null)
+                {
+                    if (node.right != null)
+                    {
+                        stack.Push(node.right);
+                    }
+
+                    if (node.left != null)
+                    {
+                        stack.Push(node.left);
+                    }
+
+                    if (previous != null)
+                    {
+                        previous.right = node;
+                        previous.left = null;
+                    }
+                }
+
+                previous = node;
+            }
+        }
+
+        /// <summary>
         /// Populate each next pointer to point to its next right node. 
         /// If there is no next right node, the next pointer should be set to NULL.
         /// Initially, all next pointers are set to NULL.
