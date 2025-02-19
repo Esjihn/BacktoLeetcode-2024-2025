@@ -15,6 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.VisualBasic;
 using System.Reflection;
+using System.Numerics;
 
 namespace ConsoleApp1
 {
@@ -98,6 +99,52 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// You are given the root of a binary tree containing digits from 0 to 9 only.
+        /// Each root-to-leaf path in the tree represents a number.
+        /// For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
+        /// Return the total sum of all root-to-leaf numbers.Test cases are generated 
+        /// so that the answer will fit in a 32-bit integer. A leaf node is a node with no children.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static int SumNumbers(TreeNode root)
+        {
+            if (root == null) return 0;
+
+            int totalSum = 0;
+            var nodes = new Queue<TreeNode>();
+            var sums = new Queue<int>();
+
+            nodes.Enqueue(root);
+            sums.Enqueue(root.val);
+
+            while (nodes.Count > 0)
+            {
+                TreeNode node = nodes.Dequeue();
+                int currentSum = sums.Dequeue();
+
+                if (node.left == null && node.right == null)
+                {
+                    totalSum += currentSum;
+                }
+
+                if (node.left != null)
+                {
+                    nodes.Enqueue(node.left);
+                    sums.Enqueue(currentSum * 10 + node.left.val);
+                }
+
+                if (node.right != null)
+                {
+                    nodes.Enqueue(node.right);
+                    sums.Enqueue(currentSum * 10 + node.right.val);
+                }
+            }
+
+            return totalSum;
         }
 
         /// <summary>
