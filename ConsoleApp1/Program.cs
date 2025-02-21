@@ -81,6 +81,8 @@ namespace ConsoleApp1
     }
 
 
+
+
     /// <summary>
     /// Main Program 2024-2025 leetcode grind... 
     /// </summary>
@@ -93,12 +95,43 @@ namespace ConsoleApp1
               { "/", (a, b) => b / a },
         };
 
+        private static TreeNode result;
+
         private int i;
         private Dictionary<int, int> inorderMap;
 
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+        /// According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined 
+        /// between two nodes p and q as the lowest node in T that has both p and q as descendants
+        /// (where we allow a node to be a descendant of itself).”
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="p"></param>
+        /// <param name="q"></param>
+        /// <returns></returns>
+        public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        {
+            Find(root, p, q);
+            return result;
+        }
+
+
+        private static bool Find(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if (root == null) return false;
+
+            var left = Find(root.left, p, q) ? 1 : 0;
+            var right = Find(root.right, p, q) ? 1 : 0;
+            var self = (root == p || root == q) ? 1 : 0;
+
+            if (left + right + self >= 2) result = root;
+            return left + right + self > 0;
         }
 
         /// <summary>
