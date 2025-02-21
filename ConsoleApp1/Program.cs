@@ -121,7 +121,6 @@ namespace ConsoleApp1
             return result;
         }
 
-
         private static bool Find(TreeNode root, TreeNode p, TreeNode q)
         {
             if (root == null) return false;
