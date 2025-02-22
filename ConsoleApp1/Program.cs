@@ -99,10 +99,41 @@ namespace ConsoleApp1
 
         private int i;
         private Dictionary<int, int> inorderMap;
+        private List<int> RightSide { get; set; }
+        private int Depth { get; set; }
 
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given the root of a binary tree, imagine yourself standing on the right side of it, 
+        /// return the values of the nodes you can see ordered from top to bottom.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public IList<int> RightSideView(TreeNode root)
+        {
+            RightSide = new List<int>();
+            Depth = 0;
+            DFS(root, 1);
+            return RightSide;
+        }
+
+        private void DFS(TreeNode node, int depth)
+        {
+            if (node == null) return;
+            else
+            {
+                if (depth == Depth + 1)
+                {
+                    RightSide.Add(node.val);
+                    Depth++;
+                }
+                DFS(node.right, depth + 1);
+                DFS(node.left, depth + 1);
+            }
         }
 
         /// <summary>
