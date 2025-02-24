@@ -108,6 +108,56 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the root of a binary tree, return the zigzag level order traversal of its nodes' values.
+        /// (i.e., from left to right, then right to left for the next level and alternate between).
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+        {
+            var result = new List<IList<int>>();
+
+            if (root != null)
+            {
+                Queue<TreeNode> queue = new Queue<TreeNode>();
+                queue.Enqueue(root);
+                var reverseFlag = false;
+                while (queue.Count > 0)
+                {
+                    var count = queue.Count;
+                    var lst = new List<int>();
+                    while (count-- > 0)
+                    {
+                        TreeNode node = queue.Dequeue();
+
+                        if (reverseFlag)
+                        {
+                            lst.Insert(0, node.val);
+                        }
+                        else
+                        {
+                            lst.Add(node.val);
+                        }
+
+
+                        if (node.left != null)
+                        {
+                            queue.Enqueue(node.left);
+                        }
+                        if (node.right != null)
+                        {
+                            queue.Enqueue(node.right);
+                        }
+                    }
+                    reverseFlag = !reverseFlag;
+                    result.Add(lst);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Given the root of a binary tree, return the level order traversal of its nodes' values.
         /// (i.e., from left to right, level by level).
         /// </summary>
