@@ -108,6 +108,36 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the root of a binary tree, return the level order traversal of its nodes' values.
+        /// (i.e., from left to right, level by level).
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public IList<IList<int>> LevelOrder(TreeNode root)
+        {
+            var res = new List<IList<int>>();
+            if (root == null) return res;
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                List<int> l = new List<int>();
+                int stop = queue.Count;
+                for (int i = 0; i < stop; i++)
+                {
+                    TreeNode node = queue.Dequeue();
+                    l.Add(node.val);
+                    if (node.left != null) queue.Enqueue(node.left);
+                    if (node.right != null) queue.Enqueue(node.right);
+                }
+                res.Add(l);
+            }
+
+            return res;
+        }
+
+        /// <summary>
         /// Given the root of a binary tree, imagine yourself standing on the right side of it, 
         /// return the values of the nodes you can see ordered from top to bottom.
         /// </summary>
