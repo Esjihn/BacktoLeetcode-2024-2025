@@ -108,6 +108,36 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public static int KthSmallest(TreeNode root, int k)
+        {
+            return InOrder(root).Skip(k - 1).Take(1).First();
+
+            IEnumerable<int> InOrder(TreeNode node)
+            {
+                if (node is not null)
+                {
+                    foreach (var n in InOrder(node.left))
+                    {
+                        yield return n;
+                    }
+                    // Trace.WriteLine(node.val); // Output: 1, 2, .. k
+                    yield return node.val;
+                    foreach (var n in InOrder(node.right))
+                    {
+                        yield return n;
+                    }
+                }
+
+
+            }
+        }
+
+        /// <summary>
         /// Given the root of a binary tree, return the zigzag level order traversal of its nodes' values.
         /// (i.e., from left to right, then right to left for the next level and alternate between).
         /// </summary>
