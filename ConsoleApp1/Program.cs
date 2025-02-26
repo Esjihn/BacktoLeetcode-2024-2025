@@ -108,7 +108,32 @@ namespace ConsoleApp1
         }
 
         /// <summary>
-        /// 
+        /// Given an integer array nums where every element appears three times except for one,
+        /// which appears exactly once. Find the single element and return it.
+        /// You must implement a solution with a linear runtime complexity and use only constant
+        /// extra space.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int SingleNumber(int[] nums)
+        {
+            int ones = 0; // Tracks the bits that have appeared once
+            int twos = 0; // Tracks the bits that have appeared twice
+
+            foreach (int num in nums)
+            {
+                ones = (ones ^ num) & ~twos;
+                twos = (twos ^ num) & ~ones;
+            }
+
+            return ones;
+        }
+
+        /// <summary>
+        /// You are given two integer arrays nums1 and nums2 sorted in non-decreasing order 
+        /// and an integer k. Define a pair(u, v) which consists of one element from the first 
+        /// array and one element from the second array. Return the k pairs (u1, v1), (u2, v2),
+        /// ..., (uk, vk) with the smallest sums.
         /// </summary>
         /// <param name="root"></param>
         /// <param name="k"></param>
