@@ -98,6 +98,8 @@ namespace ConsoleApp1
         private static TreeNode result;
 
         private int i;
+        private int nr;
+        private int nc;
         private Dictionary<int, int> inorderMap;
         private List<int> RightSide { get; set; }
         private int Depth { get; set; }
@@ -105,6 +107,50 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water),
+        /// return the number of islands. An island is surrounded by water and is formed by connecting 
+        /// adjacent lands horizontally or vertically.You may assume all four edges of the grid are 
+        /// all surrounded by water.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public int NumIslands(char[][] grid)
+        {
+            nr = grid.Length;
+            nc = grid[0].Length;
+
+            int totalIsland = 0;
+
+            for (int i = 0; i < nr; i++)
+            {
+                for (int j = 0; j < nc; j++)
+                {
+                    if (grid[i][j] == '1')
+                    {
+                        totalIsland++;
+                        findIsland(grid, i, j);
+                    }
+                }
+            }
+            return totalIsland;
+        }
+        public void findIsland(char[][] grid, int i, int j)
+        {
+            if (isValidCell(grid, i, j))
+            {
+                grid[i][j] = '0';
+                findIsland(grid, i + 1, j);
+                findIsland(grid, i - 1, j);
+                findIsland(grid, i, j + 1);
+                findIsland(grid, i, j - 1);
+            }
+        }
+        private bool isValidCell(char[][] grid, int i, int j)
+        {
+            return i >= 0 && i < nr && j >= 0 && j < nc && grid[i][j] == '1';
         }
 
         /// <summary>
