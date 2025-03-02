@@ -21,6 +21,29 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleApp1
 {
+    public class Node3
+    {
+        public int val;
+        public IList<Node3> neighbors;
+
+        public Node3()
+        {
+            val = 0;
+            neighbors = new List<Node3>();
+        }
+
+        public Node3(int _val)
+        {
+            val = _val;
+            neighbors = new List<Node3>();
+        }
+
+        public Node3(int _val, List<Node3> _neighbors)
+        {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
 
     public class Node
     {
@@ -106,6 +129,36 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        public Node3 CloneGraph(Node3 node)
+        {
+            if (node is null) return null;
+            var queue = new Queue<Node3>();
+            var visited = new Dictionary<Node3, (Node3, bool)>();
+            queue.Enqueue(node);
+            visited.Add(node, (new Node3(node.val), false));
+
+            while (queue.Any())
+            {
+                var current = queue.Dequeue();
+                var copy = visited[current].Item1;
+
+                foreach (var neighbor in current.neighbors)
+                {
+                    if (!visited.ContainsKey(neighbor))
+                        visited.Add(neighbor, (new Node3(neighbor.val), false));
+
+                    copy.neighbors.Add(visited[neighbor].Item1);
+
+                    if (!visited[neighbor].Item2 && !queue.Contains(neighbor))
+                        queue.Enqueue(neighbor);
+                }
+
+                visited[current] = (visited[current].Item1, true);
+            }
+
+            return visited[node].Item1;
         }
 
         /// <summary>
