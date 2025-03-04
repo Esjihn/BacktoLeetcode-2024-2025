@@ -135,6 +135,42 @@ namespace ConsoleApp1
         /// <summary>
         /// There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. 
         /// You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you 
+        /// must take course bi first if you want to take course ai.
+        /// For example, the pair[0, 1], indicates that to take course 0 you have to first take course 1.
+        /// Return the ordering of courses you should take to finish all courses.If there are many valid 
+        /// answers, return any of them.If it is impossible to finish all courses, return an empty array.
+        /// </summary>
+        /// <param name="numCourses"></param>
+        /// <param name="prerequisites"></param>
+        /// <returns></returns>
+        public int[] FindOrder(int numCourses, int[][] prerequisites)
+        {
+            var degree = new int[numCourses];
+
+            var parentToChildren = prerequisites.ToLookup(
+                    p => p[1],
+                    c => { degree[c[0]]++; return c[0]; });
+
+            var bfs = new List<int>(numCourses);
+
+            for (int i = 0; i < numCourses; ++i)
+                if (degree[i] == 0) bfs.Add(i);
+
+            for (int i = 0; i < bfs.Count; ++i)
+            {
+                foreach (var j in parentToChildren[bfs[i]])
+                {
+                    if (--degree[j] == 0)
+                        bfs.Add(j);
+                }
+            }
+
+            return bfs.Count == numCourses ? bfs.ToArray() : new int[0];
+        }
+
+        /// <summary>
+        /// There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. 
+        /// You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you 
         /// must take course bi first if you want to take course ai. For example, the pair[0, 1], indicates 
         /// that to take course 0 you have to first take course 1. Return true if you can finish all courses.
         /// Otherwise, return false.
