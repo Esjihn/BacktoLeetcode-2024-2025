@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
+using static ConsoleApp1.Solution;
 
 namespace ConsoleApp1
 {
@@ -134,6 +135,49 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store 
+        /// and retrieve keys in a dataset of strings. There are various applications of this data structure,
+        /// such as autocomplete and spellchecker. Implement the Trie class: Trie() Initializes the trie object.
+        /// void insert(String word) Inserts the string word into the trie. boolean search(String word) 
+        /// Returns true if the string word is in the trie(i.e., was inserted before), and false otherwise.
+        /// boolean startsWith(String prefix) Returns true if there is a previously inserted string word that
+        /// has the prefix prefix, and false otherwise.
+        /// </summary>
+        public class Trie
+        {
+            HashSet<string> values;
+            HashSet<string> keys;
+            public Trie()
+            {
+                values = new HashSet<string>();
+                keys = new HashSet<string>();
+            }
+
+            public void Insert(string word)
+            {
+                if (!values.Contains(word))
+                    values.Add(word);
+                for (var i = word.Length; i > 0; i--)
+                {
+                    if (!keys.Contains(word.Substring(0, i)))
+                        keys.Add(word.Substring(0, i));
+                    else
+                        break;// all prev string are in KEYS
+                }
+            }
+
+            public bool Search(string word)
+            {
+                return values.Contains(word);
+            }
+
+            public bool StartsWith(string prefix)
+            {
+                return keys.Contains(prefix);
+            }
+        }
+
+        /// <summary>
         /// A gene string can be represented by an 8-character long string, with choices from 'A', 'C', 'G', and 'T'.
         /// Suppose we need to investigate a mutation from a gene string startGene to a gene string endGene where one 
         /// mutation is defined as one single character changed in the gene string. For example, "AACCGGTT" --> "AACCGGTA" 
@@ -148,7 +192,6 @@ namespace ConsoleApp1
         /// <returns></returns>
         public int MinMutation(string startGene, string endGene, string[] bank)
         {
-
             //if bank is empty, return
             if (bank.Length == 0)
             {
