@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using static ConsoleApp1.Solution;
+using System.Reflection.Emit;
 
 namespace ConsoleApp1
 {
@@ -132,6 +133,94 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Design a data structure that supports adding new words and finding if a 
+        /// string matches any previously added string. Implement the WordDictionary class:
+        /// WordDictionary() Initializes the object. void addWord(word) Adds word to the 
+        /// data structure, it can be matched later. bool search(word) Returns true if there 
+        /// is any string in the data structure that matches word or false otherwise.
+        /// word may contain dots '.' where dots can be matched with any letter.
+        /// </summary>
+        public class WordDictionary
+        {
+
+            TrieNode root;
+            public WordDictionary()
+            {
+                root = new TrieNode();
+            }
+
+            public void AddWord(string word)
+            {
+                var temp = root;
+                foreach (char ch in word)
+                {
+                    if (temp.Nodes.ContainsKey(ch))
+                    {
+                        temp = temp.Nodes[ch];
+                    }
+                    else
+                    {
+                        var newNode = new TrieNode();
+                        temp.Nodes.Add(ch, newNode);
+                        temp = newNode;
+                    }
+                }
+
+                temp.IsWordEnd = true;
+            }
+
+            public bool Search(string word)
+            {
+                return SearchTrie(root, word, 0);
+            }
+
+            private bool SearchTrie(TrieNode root, string word, int index)
+            {
+                TrieNode temp = root;
+
+                if (index == word.Length)
+                {
+                    return temp.IsWordEnd;
+                }
+
+                if (word[index] != '.')
+                {
+                    if (!temp.Nodes.ContainsKey(word[index]))
+                    {
+                        return false;
+                    }
+
+                    temp = temp.Nodes[word[index]];
+                    return SearchTrie(temp, word, index + 1);
+                }
+                else
+                {
+                    foreach (var node in temp.Nodes)
+                    {
+                        if (SearchTrie(node.Value, word, index + 1))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        public class TrieNode
+        {
+            public bool IsWordEnd;
+            public Dictionary<char, TrieNode> Nodes;
+
+            public TrieNode()
+            {
+                IsWordEnd = false;
+                Nodes = new Dictionary<char, TrieNode>();
+            }
         }
 
         /// <summary>
