@@ -136,6 +136,112 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an m x n board of characters and a list of strings words, return all words on the board.
+        /// Each word must be constructed from letters of sequentially adjacent cells, where adjacent 
+        /// cells are horizontally or vertically neighboring.The same letter cell may not be used more
+        /// than once in a word.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="words"></param>
+        /// <returns></returns>
+        public IList<string> FindWords(char[][] board, string[] words)
+        {
+            Dictionary<char, List<(int row, int column)>> lettersPositions = InitializeDictionary(board);
+            List<string> answer = new(words.Length);
+
+            bool shouldReverse = words.All(w => w[0] == words[0][0]);
+            foreach (var word in words)
+            {
+                var reversed = shouldReverse ? Reverse(word) : word;
+                //var possibleStartLocations = lettersPositions[word[0]];
+                var possibleStartLocations = lettersPositions[reversed[0]];
+                foreach (var possibility in possibleStartLocations)
+                {
+                    //if(WordStartsAt(word, board, possibility))
+                    if (WordStartsAt(reversed, board, possibility))
+                    {
+                        answer.Add(word);
+                        break;
+                    }
+                }
+            }
+
+            return answer;
+        }
+
+        public Dictionary<char, List<(int row, int column)>> InitializeDictionary(char[][] board)
+        {
+            Dictionary<char, List<(int row, int column)>> lettersPositions = new();
+            for (int letter = 'a'; letter <= 'z'; letter++)
+            {
+                lettersPositions[(char)letter] = new();
+            }
+
+            // Add the array letter positions to the dictionary
+            for (int row = 0; row < board.Length; row++)
+            {
+                for (int col = 0; col < board[row].Length; col++)
+                {
+                    lettersPositions[board[row][col]].Add((row, col));
+                }
+            }
+            return lettersPositions;
+        }
+
+        public bool WordStartsAt(string word, char[][] board, (int row, int col) start)
+        {
+            Stack<(int row, int col)> positions = new();
+            return CheckLetters(word, board, start, positions, 1);
+        }
+
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        public bool CheckLetters(string word, char[][] board, (int row, int col) start, Stack<(int row, int col)> positions, int index)
+        {
+            if (word.Length == index)
+                return true;
+
+            positions.Push(start);
+            char target = word[index];
+            var neighbours = GetNeighbours(board, start);
+
+            foreach (var neighbour in neighbours)
+            {
+                if (board[neighbour.row][neighbour.col] != target || positions.Contains(neighbour))
+                    continue;
+
+                if (CheckLetters(word, board, neighbour, positions, index + 1))
+                    return true;
+            }
+
+            positions.Pop();
+            return false;
+        }
+
+        public List<(int row, int col)> GetNeighbours(char[][] board, (int row, int col) start)
+        {
+            return new[]{
+                (start.row + 1, start.col),
+                (start.row - 1, start.col),
+                (start.row, start.col + 1),
+                (start.row, start.col - 1)}
+                    .Where(x => IsInbound(board, x)).ToList();
+        }
+
+        public bool IsInbound(char[][] board, (int row, int col) pos)
+        {
+            return pos.row >= 0
+                && pos.row < board.Length
+                && pos.col >= 0
+                && pos.col < board[0].Length;
+        }
+
+        /// <summary>
         /// Design a data structure that supports adding new words and finding if a 
         /// string matches any previously added string. Implement the WordDictionary class:
         /// WordDictionary() Initializes the object. void addWord(word) Adds word to the 
