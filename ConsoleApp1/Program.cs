@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using static ConsoleApp1.Solution;
 using System.Reflection.Emit;
+using System.Reflection.Metadata;
 
 namespace ConsoleApp1
 {
@@ -133,6 +134,47 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given a string containing digits from 2-9 inclusive, return all possible letter combinations 
+        /// that the number could represent. Return the answer in any order. A mapping of digits to 
+        /// letters(just like on the telephone buttons) is given below.Note that 1 does not map to any letters.
+        /// </summary>
+        /// <param name="digits"></param>
+        /// <returns></returns>
+        public IList<string> LetterCombinations(string digits)
+        {
+            string[] phoneChars = new string[] { " ",
+                                           "",
+                                           "abc",
+                                           "def",
+                                           "ghi",
+                                           "jkl",
+                                           "mno",
+                                           "pqrs",
+                                           "tuv",
+                                           "wxyz"
+                                         };
+
+            if (digits.Length == 0) return new List<string>();
+
+            var results = new List<string>() { "" };
+            foreach (var digit in digits)
+            {
+                var keys = phoneChars[digit - '0'];
+                if (keys.Length == 0) continue;
+
+                var temp = new List<string>();
+                foreach (var result in results)
+                    foreach (var ch in keys)
+                        temp.Add(result + ch.ToString());
+
+                results = temp;
+            }
+
+            if (results.Count == 1 && results[0] == "") results.Clear();
+            return results;
         }
 
         /// <summary>
