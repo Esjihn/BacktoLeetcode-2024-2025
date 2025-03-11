@@ -137,6 +137,35 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+        /// You may return the answer in any order.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public IList<IList<int>> Combine(int n, int k)
+        {
+            var result = new List<IList<int>>();
+            GenerateCombinations(1, n, k, new List<int>(), result);
+            return result;
+        }
+
+        private void GenerateCombinations(int start, int n, int k, List<int> combination, IList<IList<int>> result)
+        {
+            if (k == 0)
+            {
+                result.Add(new List<int>(combination));
+                return;
+            }
+            for (var i = start; i <= n; ++i)
+            {
+                combination.Add(i);
+                GenerateCombinations(i + 1, n, k - 1, combination, result);
+                combination.RemoveAt(combination.Count - 1);
+            }
+        }
+
+        /// <summary>
         /// Given a string containing digits from 2-9 inclusive, return all possible letter combinations 
         /// that the number could represent. Return the answer in any order. A mapping of digits to 
         /// letters(just like on the telephone buttons) is given below.Note that 1 does not map to any letters.
