@@ -23,6 +23,7 @@ using System.Runtime.ConstrainedExecution;
 using static ConsoleApp1.Solution;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
+using System.Xml;
 
 namespace ConsoleApp1
 {
@@ -134,6 +135,40 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given an array of distinct integers candidates and a target integer target, return a list 
+        /// of all unique combinations of candidates where the chosen numbers sum to target. 
+        /// You may return the combinations in any order. The same number may be chosen from candidates
+        /// an unlimited number of times.Two combinations are unique if the frequency of at least one 
+        /// of the chosen numbers is different. The test cases are generated such that the number of 
+        /// unique combinations that sum up to target is less than 150 combinations for the given input.
+        /// </summary>
+        /// <param name="candidates"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public IList<IList<int>> CombinationSum(int[] candidates, int target)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+            Array.Sort(candidates);
+            FindUniqueCombinations(candidates, target, new List<int>(), result, 0);
+            return result;
+        }
+        private void FindUniqueCombinations(int[] candidates, int rem, List<int> lst,
+        IList<IList<int>> result, int idx)
+        {
+            if (rem == 0) result.Add(new List<int>(lst));
+            else if (rem < 0) return;
+            else
+            {
+                for (int i = idx; i < candidates.Length; i++)
+                {
+                    lst.Add(candidates[i]);
+                    FindUniqueCombinations(candidates, rem - candidates[i], lst, result, i);
+                    lst.RemoveAt(lst.Count - 1);
+                }
+            }
         }
 
         /// <summary>
