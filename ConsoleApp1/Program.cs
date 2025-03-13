@@ -137,6 +137,35 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an array nums of distinct integers, return all the possible permutations.
+        /// You can return the answer in any order.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public IList<IList<int>> Permute(int[] nums)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+            Backtrack(nums, new List<int>(), result);
+            return result;
+        }
+
+        private void Backtrack(int[] nums, List<int> path, IList<IList<int>> result)
+        {
+            if (path.Count == nums.Length)
+            {
+                result.Add(new List<int>(path));
+                return;
+            }
+            foreach (int num in nums)
+            {
+                if (path.Contains(num)) continue;
+                path.Add(num);
+                Backtrack(nums, path, result);
+                path.RemoveAt(path.Count - 1);
+            }
+        }
+
+        /// <summary>
         /// Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
         /// You may return the answer in any order.
         /// </summary>
