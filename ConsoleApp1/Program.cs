@@ -138,6 +138,37 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public IList<string> GenerateParenthesis(int n)
+        {
+            var result = new List<string>();
+            GenerateCombinations(result, "", 0, 0, n);
+            return result;
+        }
+
+        private void GenerateCombinations(IList<string> result, string current, int open, int close, int max)
+        {
+            if (current.Length == max * 2)
+            {
+                result.Add(current);
+                return;
+            }
+
+            if (open < max)
+            {
+                GenerateCombinations(result, current + "(", open + 1, close, max);
+            }
+
+            if (close < open)
+            {
+                GenerateCombinations(result, current + ")", open, close + 1, max);
+            }
+        }
+
+        /// <summary>
         /// Given an array of distinct integers candidates and a target integer target, return a list 
         /// of all unique combinations of candidates where the chosen numbers sum to target. 
         /// You may return the combinations in any order. The same number may be chosen from candidates
