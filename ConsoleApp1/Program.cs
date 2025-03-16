@@ -138,6 +138,56 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+        /// The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are 
+        /// horizontally or vertically neighboring.The same letter cell may not be used more than once.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        public bool IsSafe(bool[,] vis, int i, int j, int m, int n)
+        {
+            return i >= 0 && j >= 0 && i < m && j < n && !vis[i, j];
+        }
+
+        public bool Rec(int i, int j, int index, int m, int n, char[][] board, string word, bool[,] vis)
+        {
+            if (index == word.Length) return true;
+            if (!IsSafe(vis, i, j, m, n) || board[i][j] != word[index]) return false;
+
+            vis[i, j] = true;
+
+            bool left = Rec(i - 1, j, index + 1, m, n, board, word, vis);
+            bool right = Rec(i + 1, j, index + 1, m, n, board, word, vis);
+            bool up = Rec(i, j - 1, index + 1, m, n, board, word, vis);
+            bool down = Rec(i, j + 1, index + 1, m, n, board, word, vis);
+
+            vis[i, j] = false;
+
+            return left || right || up || down;
+        }
+
+        public bool Exist(char[][] board, string word)
+        {
+            int m = board.Length, n = board[0].Length;
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (board[i][j] == word[0])
+                    {
+                        bool[,] vis = new bool[m, n];
+                        if (Rec(i, j, 0, m, n, board, word, vis))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
         /// </summary>
         /// <param name="n"></param>
