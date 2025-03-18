@@ -87,6 +87,46 @@ namespace ConsoleApp1
         }
     }
 
+    public class NodeD
+    {
+        public bool val;
+        public bool isLeaf;
+        public NodeD topLeft;
+        public NodeD topRight;
+        public NodeD bottomLeft;
+        public NodeD bottomRight;
+
+        public NodeD()
+        {
+            val = false;
+            isLeaf = false;
+            topLeft = null;
+            topRight = null;
+            bottomLeft = null;
+            bottomRight = null;
+        }
+
+        public NodeD(bool _val, bool _isLeaf)
+        {
+            val = _val;
+            isLeaf = _isLeaf;
+            topLeft = null;
+            topRight = null;
+            bottomLeft = null;
+            bottomRight = null;
+        }
+
+        public NodeD(bool _val, bool _isLeaf, NodeD _topLeft, NodeD _topRight, NodeD _bottomLeft, NodeD _bottomRight)
+        {
+            val = _val;
+            isLeaf = _isLeaf;
+            topLeft = _topLeft;
+            topRight = _topRight;
+            bottomLeft = _bottomLeft;
+            bottomRight = _bottomRight;
+        }
+    }
+
     public class ListNode
     {
         public int val;
@@ -135,6 +175,37 @@ namespace ConsoleApp1
         public static void Main()
         {
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+        }
+
+        /// <summary>
+        /// Given a n * n matrix grid of 0's and 1's only. We want to represent grid with a Quad-Tree.
+        /// Return the root of the Quad-Tree representing grid.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public NodeD Construct(int[][] grid)
+            => GetNode(grid, grid.Length, 0, 0);
+
+        private NodeD GetNode(int[][] grid, int size, int i, int k)
+        {
+            if (size == 1 || AreSame(grid, size, i, k))
+                return new NodeD(grid[i][k] == 1, true);
+
+            return new NodeD(true, false,
+                GetNode(grid, size / 2, i, k),
+                GetNode(grid, size / 2, i, k + (size / 2)),
+                GetNode(grid, size / 2, i + (size / 2), k),
+                GetNode(grid, size / 2, i + (size / 2), k + (size / 2)));
+        }
+
+        private bool AreSame(int[][] grid, int size, int i, int k)
+        {
+            for (int ii = i; ii < i + size; ii++)
+                for (int kk = k; kk < k + size; kk++)
+                    if (grid[ii][kk] != grid[i][k])
+                        return false;
+
+            return true;
         }
 
         /// <summary>
