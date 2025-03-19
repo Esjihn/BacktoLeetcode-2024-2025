@@ -178,6 +178,25 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an integer array nums, find the subarray with the largest sum, and return its sum.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int MaxSubArray(int[] nums)
+        {
+            int maxSum = nums[0];
+            int curSum = 0;
+
+            foreach (int num in nums)
+            {
+                curSum = Math.Max(0, curSum);
+                curSum += num;
+                maxSum = Math.Max(curSum, maxSum);
+            }
+            return maxSum;
+        }
+
+        /// <summary>
         /// Given a n * n matrix grid of 0's and 1's only. We want to represent grid with a Quad-Tree.
         /// Return the root of the Quad-Tree representing grid.
         /// </summary>
