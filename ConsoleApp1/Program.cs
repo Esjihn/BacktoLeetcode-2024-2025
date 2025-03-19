@@ -178,6 +178,29 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given a circular integer array nums of length n, return the maximum possible sum of a non-empty subarray of nums.
+        /// A circular array means the end of the array connects to the beginning of the array.Formally, the next element of 
+        /// nums[i] is nums[(i + 1) % n] and the previous element of nums[i] is nums[(i - 1 + n) % n]. A subarray may only 
+        /// include each element of the fixed buffer nums at most once.Formally, for a subarray nums[i], nums[i + 1], ..., 
+        /// nums[j], there does not exist i <= k1, k2 <= j with k1 % n == k2 % n.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int MaxSubarraySumCircular(int[] nums)
+        {
+            int total = 0, maxSum = -30000, curMax = 0, minSum = 30000, curMin = 0;
+            foreach (int a in nums)
+            {
+                curMax = Math.Max(curMax + a, a);
+                maxSum = Math.Max(maxSum, curMax);
+                curMin = Math.Min(curMin + a, a);
+                minSum = Math.Min(minSum, curMin);
+                total += a;
+            }
+            return maxSum > 0 ? Math.Max(maxSum, total - minSum) : maxSum;
+        }
+
+        /// <summary>
         /// Given an integer array nums, find the subarray with the largest sum, and return its sum.
         /// </summary>
         /// <param name="nums"></param>
