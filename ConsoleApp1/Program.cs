@@ -178,6 +178,36 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// You are given an m x n integer matrix matrix with the following two properties:
+        /// Each row is sorted in non-decreasing order. The first integer of each row is greater
+        /// than the last integer of the previous row. Given an integer target, return true if 
+        /// target is in matrix or false otherwise. You must write a solution in O(log(m* n)) time complexity.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public bool SearchMatrix(int[][] matrix, int target)
+        {
+            int m = matrix.Length;
+            int n = matrix[0].Length;
+            int left = 0, right = m * n - 1;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+                int mid_val = matrix[mid / n][mid % n];
+
+                if (mid_val == target)
+                    return true;
+                else if (mid_val < target)
+                    left = mid + 1;
+                else
+                    right = mid - 1;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Given a circular integer array nums of length n, return the maximum possible sum of a non-empty subarray of nums.
         /// A circular array means the end of the array connects to the beginning of the array.Formally, the next element of 
         /// nums[i] is nums[(i + 1) % n] and the previous element of nums[i] is nums[(i - 1 + n) % n]. A subarray may only 
