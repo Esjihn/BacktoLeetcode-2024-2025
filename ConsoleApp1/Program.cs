@@ -178,6 +178,38 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// A peak element is an element that is strictly greater than its neighbors.
+        /// Given a 0-indexed integer array nums, find a peak element, and return its index.
+        /// If the array contains multiple peaks, return the index to any of the peaks.
+        /// You may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always 
+        /// considered to be strictly greater than a neighbor that is outside the array.
+        /// You must write an algorithm that runs in O(log n) time.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int FindPeakElement(int[] nums)
+        {
+            var left = 0;
+            var right = nums.Length - 1;
+
+            while (left + 1 < right)
+            {
+                var mid = left + (right - left) / 2;
+
+                if (nums[mid] < nums[mid + 1])
+                {
+                    left = mid;
+                }
+                else
+                {
+                    right = mid;
+                }
+            }
+
+            return nums[left] > nums[right] ? left : right;
+        }
+
+        /// <summary>
         /// You are given an m x n integer matrix matrix with the following two properties:
         /// Each row is sorted in non-decreasing order. The first integer of each row is greater
         /// than the last integer of the previous row. Given an integer target, return true if 
