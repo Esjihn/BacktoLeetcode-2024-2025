@@ -178,6 +178,44 @@ namespace ConsoleApp1
             Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
         }
 
+        /// <summary>
+        /// Given an array of integers nums sorted in non-decreasing order, find the starting and ending 
+        /// position of a given target value. If target is not found in the array, return [-1, -1].
+        /// You must write an algorithm with O(log n) runtime complexity.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public int[] SearchRange(int[] nums, int target)
+        {
+            int lo = 0, hi = nums.Length - 1, mid;
+            while (lo <= hi)
+            {
+                mid = lo + (hi - lo) / 2;
+                if (target > nums[mid])
+                    lo = mid + 1;
+                else
+                    hi = mid - 1;
+            }
+            if (lo == nums.Length || nums[lo] != target)
+                return new int[] { -1, -1 };
+
+            var result = new int[2];
+            result[0] = lo;
+
+            lo = 0; hi = nums.Length - 1;
+            while (lo <= hi)
+            {
+                mid = lo + (hi - lo) / 2;
+                if (target >= nums[mid])
+                    lo = mid + 1;
+                else
+                    hi = mid - 1;
+            }
+            result[1] = lo - 1;
+
+            return result;
+        }
 
         /// <summary>
         /// There is an integer array nums sorted in ascending order (with distinct values).
