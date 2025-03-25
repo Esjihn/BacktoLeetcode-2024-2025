@@ -180,6 +180,65 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an integer array nums and an integer k, return the kth largest element in the array.
+        /// Note that it is the kth largest element in the sorted order, not the kth distinct element.
+        /// Can you solve it without sorting?
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public int FindKthLargest(int[] nums, int k)
+        {
+            Suffle(nums);
+            Quick3WaySort(nums, 0, nums.Length - 1, k);
+            return nums[k - 1];
+        }
+
+        private void Suffle(int[] nums)
+        {
+            var random = new Random();
+            int N = nums.Length;
+            int r, temp;
+            for (int i = 0; i < N; i++)
+            {
+                r = random.Next(i + 1);
+
+                temp = nums[r];
+                nums[r] = nums[i];
+                nums[i] = temp;
+            }
+        }
+
+        private void Swap(int[] nums, int i, int j)
+        {
+            var temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+
+        private void Quick3WaySort(int[] nums, int lo, int hi, int k)
+        {
+            if (lo >= hi) return;
+            if (lo >= k) return;
+            if (hi < k - 1) return;
+
+            int lt = hi, gt = lo, i = lo;
+            int pivot = nums[i];
+            while (i <= lt)
+            {
+                if (nums[i] > pivot)
+                    Swap(nums, gt++, i);
+                else if (nums[i] < pivot)
+                    Swap(nums, lt--, i);
+                else
+                    i++;
+            }
+
+            Quick3WaySort(nums, lo, gt - 1, k);
+            Quick3WaySort(nums, lt + 1, hi, k);
+        }
+
+        /// <summary>
         /// Suppose an array of length n sorted in ascending order is rotated between 1 and n times. 
         /// For example, the array nums = [0,1,2,4,5,6,7] might become: [4, 5, 6, 7, 0, 1, 2] if it was rotated 4 times.
         /// [0, 1, 2, 4, 5, 6, 7] if it was rotated 7 times. Notice that rotating an array[a[0], a[1], a[2], ..., a[n - 1]] 
