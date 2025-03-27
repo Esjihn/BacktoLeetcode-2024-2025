@@ -180,6 +180,35 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+        /// A valid BST is defined as follows: The left subtree of a node contains only nodes 
+        /// with keys less than the node's key. The right subtree of a node contains only nodes 
+        /// with keys greater than the node's key. Both the left and right subtrees must also be
+        /// binary search trees.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public bool IsValidBST(TreeNode root)
+        {
+            return Evaluate(root, long.MinValue, long.MaxValue);
+        }
+
+        private bool Evaluate(TreeNode node, long min, long max)
+        {
+            if (node == null)
+            {
+                return true;
+            }
+
+            return (
+                node.val > min &&
+                node.val < max &&
+                Evaluate(node.left, min, node.val) &&
+                Evaluate(node.right, node.val, max)
+            );
+        }
+
+        /// <summary>
         /// You are given two integer arrays nums1 and nums2 sorted in non-decreasing order and an integer k.
         /// Define a pair(u, v) which consists of one element from the first array and one element from the second array.
         /// Return the k pairs (u1, v1), (u2, v2), ..., (uk, vk) with the smallest sums.
