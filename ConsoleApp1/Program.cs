@@ -180,6 +180,57 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// You are given two integer arrays nums1 and nums2 sorted in non-decreasing order and an integer k.
+        /// Define a pair(u, v) which consists of one element from the first array and one element from the second array.
+        /// Return the k pairs (u1, v1), (u2, v2), ..., (uk, vk) with the smallest sums.
+        /// </summary>
+        /// <param name="nums1"></param>
+        /// <param name="nums2"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public IList<IList<int>> KSmallestPairs(int[] nums1, int[] nums2, int k)
+        {
+            var result = new List<IList<int>>();
+            if (nums1 == null || nums1.Length == 0 || nums2 == null || nums2.Length == 0)
+                return result;
+
+            // Create a min heap to store pairs based on their sums
+            SortedSet<(int sum, int index1, int index2)> minHeap = new SortedSet<(int, int, int)>(Comparer<(int, int, int)>.Create((a, b) =>
+            {
+                int compare = a.Item1.CompareTo(b.Item1);
+                if (compare == 0)
+                    compare = a.Item2.CompareTo(b.Item2);
+                if (compare == 0)
+                    compare = a.Item3.CompareTo(b.Item3);
+                return compare;
+            }));
+
+            // Add the first pair (nums1[0], nums2[0]) to the min heap
+            minHeap.Add((nums1[0] + nums2[0], 0, 0));
+
+            while (k > 0 && minHeap.Count > 0)
+            {
+                // Get the pair with the smallest sum from the min heap
+                var (sum, index1, index2) = minHeap.Min;
+                minHeap.Remove(minHeap.Min);
+
+                // Add the pair to the result
+                result.Add(new List<int> { nums1[index1], nums2[index2] });
+
+                // Explore the next pair options by moving the indices
+                if (index1 < nums1.Length - 1)
+                    minHeap.Add((nums1[index1 + 1] + nums2[index2], index1 + 1, index2));
+
+                if (index1 == 0 && index2 < nums2.Length - 1)
+                    minHeap.Add((nums1[index1] + nums2[index2 + 1], index1, index2 + 1));
+
+                k--;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Given an integer array nums and an integer k, return the kth largest element in the array.
         /// Note that it is the kth largest element in the sorted order, not the kth distinct element.
         /// Can you solve it without sorting?
