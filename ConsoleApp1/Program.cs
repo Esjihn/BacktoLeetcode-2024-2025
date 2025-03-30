@@ -180,6 +180,42 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// You are given an m x n matrix board containing letters 'X' and 'O', capture regions that are surrounded:
+        /// Connect: A cell is connected to adjacent cells horizontally or vertically. Region: To form a region connect 
+        /// every 'O' cell. Surround: The region is surrounded with 'X' cells if you can connect the region with 'X' 
+        /// cells and none of the region cells are on the edge of the board. To capture a surrounded region, replace 
+        /// all 'O's with 'X's in-place within the original board.You do not need to return anything.
+        /// </summary>
+        /// <param name="board"></param>
+        public void Solve(char[][] board)
+        {
+            int m = board.Length;
+            int n = board[0].Length;
+
+            // Mark all border-connected 'O's as 'T'
+            for (int i = 0; i < m; i++)
+            {
+                if (board[i][0] == 'O') DFS(board, i, 0);
+                if (board[i][n - 1] == 'O') DFS(board, i, n - 1);
+            }
+            for (int j = 0; j < n; j++)
+            {
+                if (board[0][j] == 'O') DFS(board, 0, j);
+                if (board[m - 1][j] == 'O') DFS(board, m - 1, j);
+            }
+
+            // Flip all 'O's to 'X' and 'T's back to 'O'
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    board[i][j] = board[i][j] != 'T' ? 'X' : 'O';
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), 
         /// return the number of islands. An island is surrounded by water and is formed by connecting 
         /// adjacent lands horizontally or vertically.You may assume all four edges of the grid are all 
