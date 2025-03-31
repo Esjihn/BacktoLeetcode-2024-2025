@@ -180,6 +180,43 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given a reference of a node in a connected undirected graph.
+        /// Return a deep copy(clone) of the graph.
+        /// Each node in the graph contains a value(int) and a list(List[Node]) of its neighbors.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        Dictionary<Node3, Node3> reference = new Dictionary<Node3, Node3>();
+
+        public bool CheckClone(Node3 node)
+        {
+            if (reference.ContainsKey(node)) return true;
+
+            reference.Add(node, new Node3(node.val));
+            return false;
+        }
+
+        public void DeepClone(Node3 node)
+        {
+            if (CheckClone(node)) return;
+
+            for (int i = 0; i < node.neighbors.Count; i++)
+            {
+                DeepClone(node.neighbors[i]);
+                reference[node].neighbors.Add(reference[node.neighbors[i]]);
+            }
+        }
+
+        public Node3 CloneGraph(Node3 node)
+        {
+            if (node == null) return null;
+
+            DeepClone(node);
+
+            return reference[node];
+        }
+
+        /// <summary>
         /// You are given an m x n matrix board containing letters 'X' and 'O', capture regions that are surrounded:
         /// Connect: A cell is connected to adjacent cells horizontally or vertically. Region: To form a region connect 
         /// every 'O' cell. Surround: The region is surrounded with 'X' cells if you can connect the region with 'X' 
