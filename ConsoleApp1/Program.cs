@@ -180,6 +180,26 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an integer n, return the number of trailing zeroes in n!.
+        /// Note that n! = n* (n - 1) * (n - 2) * ... * 3 * 2 * 1.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public int TrailingZeroes(int n)
+        {
+            // we have to find counts of 5, 25, 125, 625, etc. dividends in n
+            int trailingZeroes = 0;
+
+            while (n >= 5)
+            {
+                n /= 5;
+                trailingZeroes += n;
+            }
+
+            return trailingZeroes;
+        }
+
+        /// <summary>
         /// You are given an array of variable pairs equations and an array of real numbers values, 
         /// where equations[i] = [Ai, Bi] and values[i] represent the equation Ai / Bi = values[i]. 
         /// Each Ai or Bi is a string that represents a single variable. You are also given some queries,
