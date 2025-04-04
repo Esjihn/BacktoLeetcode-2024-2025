@@ -180,6 +180,36 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// You are a professional robber planning to rob houses along a street.
+        /// Each house has a certain amount of money stashed, the only constraint 
+        /// stopping you from robbing each of them is that adjacent houses have security
+        /// systems connected and it will automatically contact the police if two adjacent 
+        /// houses were broken into on the same night. Given an integer array nums representing
+        /// the amount of money of each house, return the maximum amount of money you can rob 
+        /// tonight without alerting the police.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int Rob(int[] nums)
+        {
+            return TryRob(0, nums);
+        }
+        Dictionary<int, int> cache = new();
+        private int TryRob(int idx, int[] nums)
+        {
+            if (idx >= nums.Length) return 0;
+
+            if (cache.ContainsKey(idx))
+                return cache[idx];
+
+            int a = TryRob(idx + 2, nums) + nums[idx];
+            int b = TryRob(idx + 1, nums);
+
+            cache.Add(idx, Math.Max(a, b));
+            return Math.Max(a, b);
+        }
+
+        /// <summary>
         /// Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
         /// </summary>
         /// <param name="x"></param>
