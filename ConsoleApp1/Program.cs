@@ -180,6 +180,40 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given a string s and a dictionary of strings wordDict, return true if s can be segmented 
+        /// into a space-separated sequence of one or more dictionary words.
+        /// Note that the same word in the dictionary may be reused multiple times in the segmentation.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="wordDict"></param>
+        /// <returns></returns>
+        public bool WordBreak(string s, IList<string> wordDict)
+        {
+            int n = s.Length;
+            bool[] dp = new bool[n + 1];
+            dp[0] = true;
+            int max_len = 0;
+            foreach (string word in wordDict)
+            {
+                max_len = Math.Max(max_len, word.Length);
+            }
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = i - 1; j >= Math.Max(i - max_len - 1, 0); j--)
+                {
+                    if (dp[j] && wordDict.Contains(s.Substring(j, i - j)))
+                    {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            return dp[n];
+        }
+
+        /// <summary>
         /// You are a professional robber planning to rob houses along a street.
         /// Each house has a certain amount of money stashed, the only constraint 
         /// stopping you from robbing each of them is that adjacent houses have security
