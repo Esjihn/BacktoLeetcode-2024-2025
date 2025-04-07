@@ -180,6 +180,43 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given an integer array nums, return the length of the longest strictly increasing subsequence.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int LengthOfLIS(int[] nums)
+        {
+            var len = 0;
+            var tails = new int[nums.Length];
+
+            foreach (int num in nums)
+            {
+                int left = 0, right = len;
+
+                while (left < right)
+                {
+                    var mid = left + (right - left) / 2;
+                    if (tails[mid] < num)
+                    {
+                        left = mid + 1;
+                    }
+                    else
+                    {
+                        right = mid;
+                    }
+                }
+
+                tails[left] = num;
+                if (left == len)
+                {
+                    len++;
+                }
+            }
+
+            return len;
+        }
+
+        /// <summary>
         /// You are given an integer array coins representing coins of different denominations
         /// and an integer amount representing a total amount of money. Return the fewest number 
         /// of coins that you need to make up that amount.If that amount of money cannot be 
