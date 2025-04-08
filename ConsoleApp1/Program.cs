@@ -180,6 +180,33 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given a triangle array, return the minimum path sum from top to bottom.
+        /// For each step, you may move to an adjacent number of the row below.More formally,
+        /// if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
+        /// </summary>
+        /// <param name="triangle"></param>
+        /// <returns></returns>
+        public int MinimumTotal(IList<IList<int>> triangle)
+        {
+            if (triangle == null || triangle.Count == 0)
+                return 0;
+
+            int n = triangle.Count;
+            int[] dp = new int[n + 1]; // Create a dp array to store intermediate results
+
+            for (int row = n - 1; row >= 0; row--)
+            {
+                IList<int> currentRow = triangle[row];
+                for (int i = 0; i < currentRow.Count; i++)
+                {
+                    dp[i] = Math.Min(dp[i], dp[i + 1]) + currentRow[i];
+                }
+            }
+
+            return dp[0];
+        }
+
+        /// <summary>
         /// Given an integer array nums, return the length of the longest strictly increasing subsequence.
         /// </summary>
         /// <param name="nums"></param>
