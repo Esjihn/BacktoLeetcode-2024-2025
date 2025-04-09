@@ -180,6 +180,41 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given a m x n grid filled with non-negative numbers, find a path from top
+        /// left to bottom right, which minimizes the sum of all numbers along its path.
+        /// Note: You can only move either down or right at any point in time.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public int MinPathSum(int[][] grid)
+        {
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    if (i == 0 && j == 0)
+                        continue;
+
+                    if (i == 0)
+                    {
+                        grid[i][j] += grid[i][j - 1];
+                        continue;
+                    }
+
+                    if (j == 0)
+                    {
+                        grid[i][j] += grid[i - 1][j];
+                        continue;
+                    }
+
+                    grid[i][j] += Math.Min(grid[i][j - 1], grid[i - 1][j]);
+                }
+            }
+
+            return grid[grid.Length - 1][grid[0].Length - 1];
+        }
+
+        /// <summary>
         /// Given a triangle array, return the minimum path sum from top to bottom.
         /// For each step, you may move to an adjacent number of the row below.More formally,
         /// if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
