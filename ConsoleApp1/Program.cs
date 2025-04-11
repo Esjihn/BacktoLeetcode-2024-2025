@@ -180,6 +180,36 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Given a string s, return the longest palindromic substring in s.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public string LongestPalindrome(string s)
+        {
+            string T = "^#" + string.Join("#", s.ToCharArray()) + "#$";
+            int n = T.Length;
+            int[] P = new int[n];
+            int C = 0, R = 0;
+
+            for (int i = 1; i < n - 1; i++)
+            {
+                P[i] = (R > i) ? Math.Min(R - i, P[2 * C - i]) : 0;
+                while (T[i + 1 + P[i]] == T[i - 1 - P[i]])
+                    P[i]++;
+
+                if (i + P[i] > R)
+                {
+                    C = i;
+                    R = i + P[i];
+                }
+            }
+
+            int max_len = P.Max();
+            int center_index = Array.IndexOf(P, max_len);
+            return s.Substring((center_index - max_len) / 2, max_len);
+        }
+
+        /// <summary>
         /// You are given an m x n integer array grid. There is a robot initially located
         /// at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right
         /// corner (i.e., grid[m - 1][n - 1]). The robot can only move either down or right at any
